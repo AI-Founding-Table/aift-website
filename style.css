@@ -149,9 +149,16 @@ footer .ppl .bar{color:var(--gold-dim);padding:0 10px}
 .join .mail a{color:var(--gold);text-decoration:none;font-size:12px;
   letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--gold-dim);padding:13px 18px}
 .join .mail a:hover{background:#1c1a12}
-.also{border-top:1px solid var(--line);margin-top:32px;padding-top:26px}
-.also .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 8px}
-.also p{margin:0 0 16px;color:var(--mute)}
-.also a.go{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
+.sec{border-top:1px solid var(--line);margin-top:32px;padding-top:26px}
+.sec .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+.sec p{margin:0 0 16px;color:var(--mute)}
+.sec a.go{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
   letter-spacing:.24em;text-transform:uppercase;border-bottom:1px solid var(--gold-dim);padding-bottom:4px}
-@media(min-width:560px){.join{padding:30px 28px}}
+.sec a.go:hover{border-bottom-color:var(--gold)}
+.who{color:var(--mute);font-size:14px;margin:18px 0 0;padding-left:16px;border-left:1px solid var(--line)}
+/* Luma's own embed: always current, nothing to maintain when a date moves. */
+.cal{width:100%;height:860px;border:1px solid var(--line);background:var(--panel);color-scheme:dark;display:block}
+.tiny{font-size:11px;letter-spacing:.24em;text-transform:uppercase;margin:14px 0 0}
+.tiny a{color:var(--mute);text-decoration:none}
+.tiny a:hover{color:var(--gold)}
+@media(min-width:560px){.join{padding:30px 28px}.cal{height:700px}}
