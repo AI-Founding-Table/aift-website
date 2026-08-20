@@ -6,10 +6,14 @@ says whether to hand it to AI, including when the honest answer is no.
 Built for "AI for Business Owners | Practical Use Cases", Barcelona, Aug 21 2026.
 Katya Dominguez and Andres. Lives at aifoundingtable.com.
 
-## What it is
+## Pages
 
-One file. `index.html`, no build step, no dependencies, no framework. Open it in
-a browser and it works. Vercel serves it as-is with no configuration.
+    /                          waitlist homepage
+    /ai-readiness-scorecard/   the four-question scorecard
+    style.css                  shared design, edit here not per page
+
+Static files, no build step, no dependencies, no framework. Vercel serves the
+folder as-is with no configuration, and folder names become the URL paths.
 
 ## Running it locally
 
@@ -20,10 +24,11 @@ strings and the shareable-result links need a real server.
 
 ## Two things to switch on before this goes public
 
-1. **`FORM_ENDPOINT`** near the top of the script tag is `null`. While it is
-   null the email block does not render, so the page collects nothing. Point it
-   at a form endpoint (Formspree, Buttondown, a Vercel function) and the offer
-   appears. Whoever owns that endpoint owns the list.
+1. **`FORM_ENDPOINT`** near the top of the script tag on both pages is `null`.
+   While it is null, neither page collects anything: the scorecard hides its
+   email block, and the homepage falls back to two mailto links that do work
+   today. Point it at a form endpoint (Formspree, Buttondown, a Vercel function)
+   and the forms appear. Whoever owns that endpoint owns the list.
 
 2. **Vercel Web Analytics**, switched on in the Vercel dashboard. The script tag
    is already in the page and is inert until then. Without it there is no way to

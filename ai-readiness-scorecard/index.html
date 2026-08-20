@@ -11,145 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --ink:#0b0b10; --panel:#101017; --line:#2a2a33;
-  --gold:#c9a961; --gold-dim:#8a7440;
-  --white:#f4f2ee; --mute:#8d8d99;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
-  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{
-  background:var(--ink); color:var(--white); font-family:var(--sans);
-  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
-  padding:20px 16px 64px;
-}
-.wrap{max-width:640px;margin:0 auto}
-.frame{border:1px solid var(--line);padding:28px 20px 32px}
-.eyebrow{
-  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--gold);margin:0 0 22px
-}
-h1{
-  font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:clamp(38px,12vw,68px);line-height:.92;letter-spacing:-.01em;
-  margin:0 0 4px
-}
-h1 .gold{color:var(--gold);display:block}
-.rule{width:44px;height:1px;background:var(--gold);margin:22px 0}
-.lede{color:var(--mute);max-width:46ch;margin:0}
-.lede b{color:var(--white);font-weight:600}
-
-.q{display:none;border-top:1px solid var(--line);padding:26px 0 4px}
-.q.on{display:block}
-.bar{height:2px;background:var(--line);margin:22px 0 0}
-.bar i{display:block;height:2px;background:var(--gold);width:0;transition:width .28s ease}
-.step{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:10px 0 0}
-.hd{transition:opacity .2s}
-form.started .hd{display:none}
-.qnum{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim)}
-.qtext{font-family:var(--serif);font-weight:700;font-size:clamp(21px,5.5vw,27px);line-height:1.2;margin:8px 0 16px}
-.opts{display:grid;gap:8px}
-label.opt{
-  display:flex;gap:12px;align-items:baseline;cursor:pointer;
-  border:1px solid var(--line);background:var(--panel);
-  padding:13px 14px;transition:border-color .12s,background .12s;
-}
-label.opt:hover{border-color:var(--gold-dim)}
-label.opt input{position:absolute;opacity:0;pointer-events:none}
-label.opt .dot{
-  flex:0 0 auto;width:9px;height:9px;border:1px solid var(--mute);
-  border-radius:50%;transform:translateY(1px)
-}
-label.opt:has(input:checked){border-color:var(--gold);background:#15140f}
-label.opt:has(input:checked) .dot{background:var(--gold);border-color:var(--gold)}
-label.opt:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
-label.opt span.t{font-size:15px}
-
-.actions{border-top:1px solid var(--line);padding-top:26px;margin-top:26px}
-.back{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;margin-top:18px}
-.back:hover{color:var(--gold)}
-#go[hidden]{display:none}
-button{
-  font:inherit;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
-  background:var(--gold);color:#0b0b10;border:1px solid var(--gold);
-  padding:15px 22px;width:100%;cursor:pointer
-}
-button[disabled]{background:transparent;color:var(--mute);border-color:var(--line);cursor:not-allowed}
-button.ghost{background:transparent;color:var(--gold);border-color:var(--gold-dim)}
-.hint{color:var(--mute);font-size:13px;margin:12px 0 0;text-align:center}
-
-/* result */
-#result[hidden]{display:none}
-.score{display:flex;align-items:baseline;gap:10px;margin:0 0 2px}
-.score b{font-family:var(--serif);font-size:76px;line-height:1;font-weight:900;color:var(--gold)}
-.score span{color:var(--mute);font-size:15px}
-.verdict{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(30px,9vw,46px);line-height:1;margin:14px 0 0}
-.body p{margin:0 0 14px}
-.weak{border-left:1px solid var(--gold);padding-left:16px;margin:22px 0}
-.weak .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 6px}
-.breakdown{margin:26px 0 0}
-.br{border-top:1px solid var(--line);padding:16px 0}
-.br-top{display:flex;gap:14px;align-items:baseline;justify-content:space-between}
-.br-q{color:var(--mute);font-size:14px;margin:0}
-.br-n{color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px;font-weight:600}
-.rub{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:2px}
-.rub li{display:flex;gap:11px;align-items:baseline;font-size:13px;line-height:1.45;
-  color:var(--mute);padding:6px 9px;border-left:2px solid transparent}
-.rub li b{flex:0 0 auto;color:var(--gold-dim);font-weight:600;font-variant-numeric:tabular-nums}
-.rub li.is{color:var(--white);background:#15140f;border-left-color:var(--gold)}
-.rub li.is b{color:var(--gold)}
-.rub li.is em{margin-left:auto;padding-left:10px;font-style:normal;font-size:10px;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-.row2{display:grid;gap:10px;margin-top:18px}
-.next{border-top:1px solid var(--line);margin-top:26px;padding-top:26px}
-.next .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 8px}
-.next p{margin:0;font-size:17px}
-.offer{border:1px solid var(--gold-dim);background:#15140f;padding:22px 20px;margin-top:26px}
-.offer h3{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(24px,7vw,32px);line-height:1;margin:0 0 12px}
-.offer p{color:var(--mute);margin:0;font-size:15px}
-.offer p b{color:var(--white);font-weight:600}
-.links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-.links a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;cursor:pointer}
-.links a:hover{color:var(--gold)}
-input[type=email]{
-  font:inherit;background:var(--panel);border:1px solid var(--line);
-  color:var(--white);padding:14px;width:100%
-}
-input[type=email]:focus{outline:none;border-color:var(--gold)}
-footer{text-align:center;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
-footer .org{color:var(--white);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin:0}
-footer .ppl{margin:10px 0 0;font-size:12px;color:var(--mute);display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
-footer .ppl a{color:var(--mute);text-decoration:none}
-footer .ppl a:hover{color:var(--gold)}
-footer .ppl .bar{color:var(--gold-dim)}
-/* XS: 320 to 359 */
-@media(max-width:359px){
-  body{padding:14px 10px 48px}
-  .frame{padding:22px 16px 26px}
-  h1{font-size:34px}
-  label.opt{padding:12px 12px}
-  label.opt span.t{font-size:14px}
-  .links{gap:16px}
-}
-/* S/M: 560 up */
-@media(min-width:560px){
-  .frame{padding:44px 40px 48px}
-  .row2{grid-template-columns:1fr auto}
-  .row2 button{width:auto}
-  .offer{padding:28px 28px 26px}
-  .br-top{gap:24px}
-}
-/* L/XL: give the page room without stretching the line length */
-@media(min-width:1100px){
-  body{padding:56px 24px 96px;font-size:17px}
-  .wrap{max-width:720px}
-  .frame{padding:56px 56px 60px}
-  .lede{font-size:18px}
-}
-</style>
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="wrap"><div class="frame">
@@ -205,12 +67,8 @@ footer .ppl .bar{color:var(--gold-dim)}
 </div>
 
 <footer>
-  <p class="org">AI Founding Table</p>
-  <p class="ppl">
-    <a href="mailto:katya@aimarketinghub.pro">Katya</a>
-    <span class="bar">|</span>
-    <a href="mailto:andres@redmage.cc">Andres</a>
-  </p>
+  <p class="org"><a href="/" style="color:inherit;text-decoration:none">AI Founding Table</a></p>
+  <p class="ppl"><a href="mailto:katya@aimarketinghub.pro">Katya</a><span class="bar">|</span><a href="mailto:andres@redmage.cc">Andres</a></p>
 </footer>
 </div></div>
 
