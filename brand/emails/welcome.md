@@ -1,46 +1,62 @@
 # Welcome email
 
-Fires on subscribe for everyone (`send_welcome_email: true` in
-`api/subscribe.js`). It sets expectations and stops.
+Fires on subscribe, or after confirming while double opt-in is on.
 
-It deliberately does not carry the four scorecard examples. Those were promised
-to people who finished the scorecard, and they arrive from the automation
-instead. See `scorecard-examples.md`.
+Paste the text below straight into beehiiv's editor. That is the right route
+for beehiiv: it wraps posts in its own template, so pasting a full HTML email
+gives you two wrappers fighting each other. `welcome.html` exists for the
+custom-HTML block if you want it, but the editor is simpler and it will match
+the theme automatically.
 
-**Subject:** You are on the list
+**Subject:** You're in
 
-**Preview text:** One email when a session opens. That is all this is.
+**Preview text:** Here's what you actually signed up for.
 
 ---
 
-One email when a new session opens in Barcelona. That is what this list does,
-and it is all it does.
+Hi!
 
-The free tickets, member discounts and early access go out in the WhatsApp
-community before any of it is public. That is the one worth joining.
+Thanks for joining us. Quick note on what you signed up for, so nothing's a
+surprise later.
 
-**[Join on WhatsApp]**
+You'll get one email when a new session opens in Barcelona. That's genuinely
+it. We're not going to fill your inbox.
 
-If you have not scored a piece of your work yet, the scorecard takes 90 seconds
-and is willing to tell you that AI is the wrong tool for it.
-[Take the scorecard]
+If you want first crack at things, join the WhatsApp community. Free tickets,
+member discounts and early access all go out there before any of it is public.
 
-Already did? The four worked examples are at aifoundingtable.com/four-examples,
-in case you closed the tab.
+**[Join the WhatsApp community]**
 
-Katya and Andres
+Two things worth knowing while you're here.
+
+Sessions are capped at 20 seats, so they do fill up.
+
+And if you haven't run the scorecard yet, it takes about 90 seconds and it'll
+happily tell you AI is the wrong tool for whatever you had in mind. Most
+people's first guess scores badly, which is the useful part.
+
+**[Take the scorecard]**
+
+Looking forward to seeing you at one of these!
+
+Katya & Andres
 
 ---
 
 ## Notes
 
-Short because a welcome email has one job: say what the person just signed up
-for, so the first real send is not a surprise. Anything else here competes with
-the thing that actually matters.
+Voice comes from `references/voice.md` in AIS-OS, the outreach section: greet
+warmly, lead with something specific, contractions throughout, genuine
+exclamation points rather than performative ones, a warm closer instead of a
+bare sign-off.
 
-One button. Luma is left out on purpose. Somebody on this list already gets
-told when a session opens, so pointing them at the calendar as well is asking
-twice for the same outcome.
+The first draft of this had none of that. It read as a series of clipped
+assertions because the banned-words list got applied as a style rather than as
+a filter. Worth remembering for anything else written here.
 
-"Willing to tell you that AI is the wrong tool for it" is the line that makes
-the scorecard worth clicking. Every other AI quiz says yes.
+It no longer says the WhatsApp group is "the one worth joining". Telling
+somebody who just joined the list that the other thing is the good one
+undercuts what they did thirty seconds ago.
+
+Katya has not passed on this. Her voice is not in the reference file, and this
+goes out from both names, so she should read it before it sends.

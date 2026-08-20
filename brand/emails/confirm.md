@@ -1,32 +1,36 @@
 # Double opt-in confirmation
 
-Only sends while double opt-in is enabled, which it is not today. beehiiv owns
-the layout and the confirm button; this is the copy that goes around them.
+Live now: double opt-in is on, so this is the first thing anybody receives.
+beehiiv owns the layout and the confirm button; this is the wording around it.
 
-**Subject:** Confirm your email
+**Subject:** One click and you're in
 
-**Preview text:** One click and you are in.
+**Preview text:** Confirm your email and we'll leave you alone.
 
 ---
 
-Someone used this address to join the AI Founding Table list.
+Hi!
 
-If that was you, confirm it below and the first email follows straight away.
+Someone used this address to sign up for the AI Founding Table list. If that
+was you, hit the button and you're set.
 
 **[Confirm my email]**
 
-If it was not you, ignore this. Nothing happens, and we will not write again.
+If it wasn't you, just ignore this. Nothing happens and we won't write again.
+
+Katya & Andres
 
 ---
 
 ## Notes
 
-Short on purpose. This email has one job and every extra sentence is a reason
-to close the tab.
+Four sentences, because this email has exactly one job and everything else is a
+reason to close the tab. No pitch here: the reward for confirming is the next
+email, which is worth having.
 
-No offer, no pitch, no "we are so excited". The reward for confirming is the
-next email, which is worth having, so say that and stop.
+The last line matters more than it looks. Unconfirmed addresses are often typos
+or somebody signing up a colleague, and telling that person they can safely do
+nothing is the difference between an ignored email and a spam complaint.
 
-The last line is not filler. Unconfirmed addresses are often typos or someone
-signing a colleague up, and telling that person they can safely do nothing is
-the difference between an ignored email and a spam complaint.
+Set the post-confirmation redirect to https://aifoundingtable.com/four-examples/
+so confirming lands people on something worth reading instead of a beehiiv page.
