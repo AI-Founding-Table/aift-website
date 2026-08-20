@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Founding Table | Barcelona</title>
+<meta name="description" content="A room of business owners in Barcelona working out where AI earns its place and where it does not. Small sessions, practical use cases.">
+<meta property="og:title" content="AI Founding Table">
+<meta property="og:description" content="A room of business owners in Barcelona working out where AI earns its place and where it does not.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap"><div class="frame home">
+
+  <p class="eyebrow">Barcelona</p>
+  <h1>AI Founding<span class="gold">Table</span></h1>
+  <div class="rule"></div>
+  <p class="lede">A room of business owners working out where AI earns its place, and where it does not.</p>
+  <p class="lede">Sessions are small and capped at 20 seats. They fill from this list.</p>
+
+  <div class="join">
+    <h2>Join the list</h2>
+
+    <div id="form" hidden>
+      <p>One email when the next session opens. Nothing else.</p>
+      <div class="row2">
+        <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+        <button type="button" class="ghost" id="send">Join</button>
+      </div>
+      <p class="hint" id="sendmsg" style="text-align:left" hidden></p>
+    </div>
+
+    <div id="nolist">
+      <p>Write to either of us and we will add you.</p>
+      <p class="mail">
+        <a href="mailto:katya@aimarketinghub.pro?subject=AI%20Founding%20Table%20waitlist">Email Katya</a>
+        <a href="mailto:andres@redmage.cc?subject=AI%20Founding%20Table%20waitlist">Email Andres</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="also">
+    <p class="k">Before you come</p>
+    <p>Pick one task you actually do and find out in 90 seconds whether AI is the right tool for it. It is often not, and the test will say so.</p>
+    <a class="go" href="/ai-readiness-scorecard/">Take the scorecard</a>
+  </div>
+
+<footer>
+  <p class="org">AI Founding Table</p>
+  <p class="ppl"><a href="mailto:katya@aimarketinghub.pro">Katya</a><span class="bar">|</span><a href="mailto:andres@redmage.cc">Andres</a></p>
+</footer>
+</div></div>
+
+<script>
+// ponytail: same switch as the scorecard. Null means the form does not render
+// and the page falls back to two mailto links, which actually work today.
+// Do not swap in a form that quietly goes nowhere.
+var FORM_ENDPOINT = null;
+
+window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments) };
+function count(name){ try{ window.va('event',{name:name}) }catch(e){} }
+
+if(FORM_ENDPOINT){
+  document.getElementById('form').hidden=false;
+  document.getElementById('nolist').hidden=true;
+}
+
+document.getElementById('send').addEventListener('click',function(){
+  var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');
+  var email=field.value.trim();
+  msg.hidden=true;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ field.focus(); return; }
+  btn.disabled=true; btn.textContent='Adding';
+  fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({email:email,list:'waitlist'})})
+  .then(function(r){ if(!r.ok) throw 0;
+    btn.textContent='You are on it'; field.disabled=true;
+    msg.hidden=false; msg.textContent='One email when the next session opens.';
+    count('waitlist');
+  })
+  .catch(function(){ btn.disabled=false; btn.textContent='Join';
+    msg.hidden=false; msg.textContent='That did not go through. Write to andres@redmage.cc instead.'; });
+});
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
