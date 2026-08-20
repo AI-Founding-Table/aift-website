@@ -10,13 +10,19 @@ The AI Founding Table website. Live at aifoundingtable.com on Vercel.
     /                          homepage
     /ai-readiness-scorecard/   the four-question scorecard
     style.css                  shared design for every page
+    api/subscribe.js           the only server-side code
 
-Static HTML, CSS and vanilla JS. No build step, no framework, no dependencies,
-no package.json. Vercel serves the folder as-is and folder names become URLs.
-Open a file in a browser and it works.
+Static HTML, CSS and vanilla JS, plus one Vercel function. No build step, no
+framework, no dependencies, no package.json. Vercel serves the folder as-is,
+folder names become URLs, and anything in `api/` becomes an endpoint.
 
 Keep it that way. If you find yourself adding a bundler, a framework or a
-dependency, stop and ask. The whole site is three files.
+dependency, stop and ask.
+
+`api/subscribe.js` exists for one reason: beehiiv's API needs a Bearer token,
+and a token in a static page is a token anybody can read. It reads
+`BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` from the environment. Never put
+a key in a page, and never add a second endpoint without the same reason.
 
 ## Run it
 
@@ -24,6 +30,10 @@ dependency, stop and ask. The whole site is three files.
 
 Then http://localhost:4321. A `file://` open mostly works, but query strings
 and the shareable-result links need a real server.
+
+That serves the static files only. `/api/subscribe` will 404, so the gate's
+failure path is what you will see. To exercise the real endpoint use
+`vercel dev`, or stub `window.fetch` in the console.
 
 ## Things that must not change silently
 
@@ -34,8 +44,9 @@ that you cannot see from here.
 - **The `?s=3542` result format.** Four digits, 1 to 5, one per question in
   order. Shared links carry it. Changing the questions, their order, or the
   1-to-5 scale silently changes what every previously shared link says.
-- **Analytics event names**: `start`, `done`, `shared-view`, `share`, `lead`,
-  `follow`. Renaming one orphans its history in Vercel.
+- **Analytics event names**: `start`, `gate-view`, `lead`, `gate-fail`, `done`,
+  `shared-view`, `share`, `follow`, `whatsapp`. Renaming one orphans its
+  history in Vercel.
 - **Section anchors** `#who`, `#scorecard`, `#sessions`, `#contact`.
 
 ## The rule behind the whole thing
@@ -46,14 +57,13 @@ error it teaches.
 
 In practice:
 
-- **Never ship a form that discards what it collects.** `FORM_ENDPOINT` is
-  `null` on purpose when there is nowhere to send an address, and the email
-  block does not render at all rather than accepting input and dropping it.
-- **Never promise what the plumbing does not do.** Formspree stores and
-  forwards; it does not email the person. So the success copy says a human will
-  send it, not "check your inbox".
-- **Failure paths say they failed.** The send handler has a visible error state
-  and an address to fall back to. Do not replace it with a silent catch.
+- **Never ship a form that discards what it collects.**
+- **Never promise what the plumbing does not do.**
+- **Failure paths say they failed.** If the subscribe call fails, the score is
+  shown anyway with a note saying the sign-up did not go through, and a
+  `gate-fail` event is counted. Withholding the result would punish someone for
+  our outage, and swallowing the error would hide a broken API key behind what
+  looks like poor conversion. Do not replace either with a silent catch.
 - **Keep the counters.** `start` against `done` is the completion rate. Without
   them a launch that nobody finishes is indistinguishable from a quiet week.
 
@@ -112,6 +122,19 @@ Verify at 320, 375, 768, 1280 and 1920. Check for horizontal overflow, targets
 under 24px, unlabelled controls and heading jumps. The scorecard result view
 needs checking with the offer block forced visible, since it is hidden by
 default.
+
+## The gate
+
+`GATE` at the top of the scorecard's script decides whether the email is asked
+for before the score. It is one line because this is a conversion question, not
+an architecture one, and `start` against `gate-view` against `lead` is what
+should settle it rather than an argument.
+
+Deep-linked results (`?s=`) skip the gate on purpose. The person who shared it
+already gave an address, and gating their recipient would kill the sharing that
+brings people here in the first place.
+
+The gate is asked once per session. Scoring a second task does not ask again.
 
 ## Editing the scorecard
 

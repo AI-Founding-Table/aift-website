@@ -55,7 +55,7 @@ body{
   flex-wrap:wrap;margin:0 0 30px;padding-bottom:18px;border-bottom:1px solid var(--line)}
 .mark{font-family:var(--serif);font-weight:900;text-transform:uppercase;
   font-size:15px;letter-spacing:.02em;margin:0}
-.mark a{color:var(--white);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+.mark a{color:var(--white);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block;white-space:nowrap}
 .mark a:hover{color:var(--gold)}
 .masthead nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:2px 20px;margin:0;padding:0}
 .masthead nav a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -169,6 +169,15 @@ label.opt span.t{font-size:15px}
 .back:hover{color:var(--gold)}
 #go[hidden]{display:none}
 
+/* ---- scorecard: the email gate ---- */
+.gate[hidden]{display:none}
+.gate h2{margin:0 0 14px}
+.gate>p{color:var(--mute);max-width:52ch;margin:0 0 4px}
+.gate-note{font-size:13px;color:var(--mute);margin:14px 0 0;max-width:52ch}
+.note{border-left:2px solid var(--gold);background:var(--sel);padding:14px 16px;
+  margin:0 0 26px;font-size:14px}
+.note[hidden]{display:none}
+
 /* ---- scorecard: result ---- */
 #result[hidden]{display:none}
 .score{display:flex;align-items:baseline;gap:10px;margin:0 0 2px}
@@ -270,6 +279,10 @@ footer .ppl .bar{color:var(--dim);padding:0 10px;background:none;height:auto;dis
 }
 
 /* ---- breakpoints: XS 320, S/M 560, L/XL 1100 ---- */
+@media(max-width:459px){
+  .masthead nav.inline-always ul{gap:2px 14px}
+  .mark{font-size:13px}
+}
 @media(max-width:359px){
   body{padding:14px 10px 48px}
   .frame{padding:22px 16px 26px}

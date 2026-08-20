@@ -40,7 +40,23 @@
   </div>
 </form>
 
+<section class="gate" id="gate" hidden aria-labelledby="gate-h">
+  <p class="k">One last step</p>
+  <h2 id="gate-h" tabindex="-1">Where should we send it?</h2>
+  <p>Your score, and four real examples scored the same way. Two that worked and two that did not, with the actual numbers, including the automation that scored 14 and then quietly stopped running for weeks.</p>
+  <div class="row2">
+    <div>
+      <label class="field" for="email">Your email</label>
+      <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" aria-describedby="gatemsg gate-note">
+    </div>
+    <button type="button" id="gate-send">See my score</button>
+  </div>
+  <p class="hint" id="gatemsg" role="status" style="text-align:left"></p>
+  <p class="gate-note" id="gate-note">You will also get an email when a new session opens. Nothing else, and you can leave any time.</p>
+</section>
+
 <div id="result" hidden>
+  <p class="note" id="r-note" role="status" hidden></p>
   <p class="score"><b id="r-score"></b><span>out of 20</span></p>
   <h2 class="verdict" id="r-verdict" tabindex="-1"></h2>
   <div class="rule"></div>
@@ -59,19 +75,6 @@
     <p id="r-next"></p>
   </div>
 
-  <section class="offer" id="offer" hidden aria-labelledby="offer-h">
-    <h2 id="offer-h">Four real examples,<br>scored</h2>
-    <p>Two that worked and two that did not, with the actual numbers. Including the automation that scored 14 and then quietly stopped running for weeks without anyone noticing.</p>
-    <div class="row2">
-      <div>
-        <label class="field" for="email">Your email</label>
-        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" aria-describedby="sendmsg">
-      </div>
-      <button type="button" class="ghost" id="send">Send them</button>
-    </div>
-    <p class="hint" id="sendmsg" role="status" style="text-align:left"></p>
-  </section>
-
   <p class="links">
     <button type="button" id="share">Share this result</button>
     <button type="button" id="again">Score another task</button>
@@ -85,21 +88,15 @@
 </div></div>
 
 <script>
-// The one line that turns this from a quiz into a lead magnet.
-//
-// Formspree. Create a form at formspree.io, copy the endpoint it gives you, and
-// paste it here in place of null:
-//
-//     var FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx";
-//
-// The submission arrives in the Formspree inbox and is forwarded on by email,
-// carrying the address, the result line, and the four scores. Formspree stores
-// and forwards. It does not send anything to the person, so the four examples
-// go out by hand. The copy below says so rather than implying an autoresponder.
-//
-// While this is null the offer block does not render, so the page shows the
-// score and the next step and never pretends to collect an address.
-var FORM_ENDPOINT = null;
+// Ask for the email before showing the score. Flip to false and the result
+// appears the moment the fourth question is answered. It is one line on
+// purpose: gating is a conversion question, not an architecture one, and the
+// start / done / lead counters are what should settle it.
+var GATE = true;
+
+// Same-origin. The beehiiv key lives in api/subscribe.js on the server, never
+// here, because anything in this file is readable by anyone who views source.
+var SUBSCRIBE_ENDPOINT = '/api/subscribe';
 
 // ponytail: Vercel Web Analytics. Inert until it is switched on in the Vercel
 // dashboard, no key needed, no npm install. count('start') and count('done')
@@ -246,7 +243,6 @@ function render(a,fromLink){
 
   lastText=total+'/20. '+band.v+'. '+(lowest<4?'Weakest link: '+QUESTIONS[idx].q+' ('+lowest+'/5).':'No weak link.')+' Scored with the 90-second AI use-case test.';
 
-  document.getElementById('offer').hidden=!FORM_ENDPOINT;
   form.hidden=true;
   document.getElementById('result').hidden=false;
   window.scrollTo(0,0);
@@ -255,11 +251,54 @@ function render(a,fromLink){
   count(fromLink?'shared-view':'done'); // a shared link is a view, not a completion
 }
 
+var gatePassed=false;
 form.addEventListener('submit',function(e){
   e.preventDefault();
   if(step<last){ show(step+1,true); return; }   // Enter on an earlier question advances
-  if(complete()) render(answers());
+  if(!complete()) return;
+  if(GATE && !gatePassed){ showGate(); return; }
+  render(answers());
 });
+
+function showGate(){
+  form.hidden=true;
+  var g=document.getElementById('gate');
+  g.hidden=false;
+  window.scrollTo(0,0);
+  document.getElementById('gate-h').focus();
+  count('gate-view');
+}
+
+document.getElementById('gate-send').addEventListener('click',function(){
+  var btn=this, field=document.getElementById('email'), msg=document.getElementById('gatemsg');
+  var email=field.value.trim();
+  msg.textContent=''; field.removeAttribute('aria-invalid');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    field.setAttribute('aria-invalid','true');
+    msg.textContent='Enter an email address, for example you@company.com.';
+    field.focus(); return;
+  }
+  var a=answers();
+  var band=BANDS.find(function(b){ return a.reduce(function(x,y){return x+y},0)>=b.min });
+  btn.disabled=true; btn.textContent='One moment';
+  fetch(SUBSCRIBE_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({email:email,answers:a,verdict:band.v})})
+  .then(function(r){ if(!r.ok) throw 0; count('lead'); pass(a,''); })
+  .catch(function(){
+    // A failure on our side is not a reason to withhold what they answered
+    // four questions for. Show the score, say plainly that the sign-up did
+    // not go through, and count it so a broken key cannot hide.
+    count('gate-fail');
+    pass(a,'Your score is below. The sign-up did not go through, so write to andres@redmage.cc if you want the four examples.');
+  });
+});
+
+function pass(a,note){
+  gatePassed=true;
+  document.getElementById('gate').hidden=true;
+  render(a);
+  if(note){ var n=document.getElementById('r-note'); n.textContent=note; n.hidden=false; }
+}
 
 document.getElementById('share').addEventListener('click',function(){
   var btn=this, text=lastText+'\n'+location.href;
@@ -270,30 +309,9 @@ document.getElementById('share').addEventListener('click',function(){
   });
 });
 
-document.getElementById('send').addEventListener('click',function(){
-  var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');
-  var email=field.value.trim();
-  msg.textContent='';
-  field.removeAttribute('aria-invalid');
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
-    field.setAttribute('aria-invalid','true');
-    msg.textContent='Enter an email address, for example you@company.com.';
-    field.focus(); return;
-  }
-  btn.disabled=true; btn.textContent='Sending';
-  fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-    body:JSON.stringify({email:email,result:lastText,answers:answers()})})
-  .then(function(r){ if(!r.ok) throw 0;
-    btn.textContent='Got it'; field.disabled=true;
-    msg.textContent='We have your address. The four examples come from a person, not a robot, so give it a day. Nothing else follows unless you ask for it.';
-    count('lead');
-  })
-  .catch(function(){ btn.disabled=false; btn.textContent='Send them';
-    msg.textContent='That did not go through. Try again, or write to andres@redmage.cc.'; });
-});
-
 document.getElementById('again').addEventListener('click',function(){
   form.reset(); form.classList.remove('started'); kb=false;
+  var n=document.getElementById('r-note'); n.hidden=true; n.textContent='';
   document.getElementById('result').hidden=true; form.hidden=false;
   show(0,true); window.scrollTo(0,0);
   try{ history.replaceState(null,'',location.pathname) }catch(e){}

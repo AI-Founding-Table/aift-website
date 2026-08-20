@@ -53,7 +53,7 @@
   <div class="rule reveal" style="--i:2"></div>
   <p class="lede reveal" style="--i:3">Most business owners have already tried AI. Few have made it a repeatable part of the business.</p>
   <p class="hero-cta reveal" style="--i:4">
-    <a class="primary" href="#contact">Join the list</a>
+    <a class="primary" href="#contact">Join the community</a>
     <a href="#sessions">See sessions</a>
   </p>
 
@@ -78,11 +78,17 @@
   </section>
 
   <section class="join" id="contact" aria-labelledby="join-h">
-    <h2 id="join-h">Join the list</h2>
-    <p>Sessions are capped at 20 seats. Follow the calendar and Luma tells you the moment a new one opens, without anyone having to remember to email you.</p>
+    <h2 id="join-h">Join the table</h2>
+    <p>The WhatsApp community is where the free tickets, member discounts and early access to new sessions go out, usually before anything is public.</p>
     <p class="mail">
-      <a class="primary" id="follow" href="https://luma.com/katyadominguez" target="_blank" rel="noopener">Follow the calendar<span class="sr"> on Luma (opens in a new tab)</span></a>
+      <a class="primary" id="whatsapp" href="https://chat.whatsapp.com/ECr1W2DwGVc7py0fXZS4gI?mode=gi_t" target="_blank" rel="noopener">Join on WhatsApp<span class="sr"> community (opens in a new tab)</span></a>
     </p>
+
+    <p class="or">Prefer your calendar? Follow on Luma and it tells you when a session opens.</p>
+    <p class="mail">
+      <a id="follow" href="https://luma.com/katyadominguez" target="_blank" rel="noopener">Follow the calendar<span class="sr"> on Luma (opens in a new tab)</span></a>
+    </p>
+
     <p class="or">Or write to us directly.</p>
     <p class="mail">
       <a href="mailto:katya@aimarketinghub.pro?subject=AI%20Founding%20Table">Email Katya</a>
@@ -121,6 +127,7 @@ var wide=window.matchMedia('(min-width: 560px)');
 wide.addEventListener('change',function(e){ if(e.matches && drawer.open) drawer.close() });
 
 document.getElementById('follow').addEventListener('click',function(){ count('follow') });
+document.getElementById('whatsapp').addEventListener('click',function(){ count('whatsapp') });
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

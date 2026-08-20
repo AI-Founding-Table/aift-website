@@ -38,18 +38,20 @@ strings and the shareable-result links need a real server.
 
 ## Two things to switch on before this goes public
 
-1. **`FORM_ENDPOINT`** in the scorecard's script tag is `null`. Create a form at
-   formspree.io and paste the endpoint it gives you in place of `null`. Until
-   then the offer block does not render and the page collects nothing.
+1. **Two environment variables in Vercel**, under Settings > Environment
+   Variables:
 
-   Formspree stores and forwards. It does not send anything to the person, so
-   the four examples go out by hand. The success copy says so rather than
-   implying an autoresponder that does not exist.
+       BEEHIIV_API_KEY         from beehiiv, Settings > API
+       BEEHIIV_PUBLICATION_ID  looks like pub_xxxxxxxx-xxxx-...
 
-The homepage collects nothing and has no endpoint. The waitlist points at
-Katya's Luma calendar, where Follow already does the job the form would have
-done, and better: Luma notifies followers itself, so a new session cannot go
-out unannounced because someone forgot.
+   Until both are set, `api/subscribe.js` returns 503, the scorecard shows the
+   score with a note saying the sign-up did not go through, and every attempt
+   counts a `gate-fail`. So a missing key is visible in the numbers rather than
+   looking like nobody signed up.
+
+The homepage collects nothing itself. It points at the WhatsApp community, at
+Katya's Luma calendar, and at two email addresses. Luma notifies followers on
+its own, so a new session cannot go out unannounced because someone forgot.
 
 Vercel Web Analytics is on. Events: `start` and `done` on the scorecard,
 `shared-view` when a shared link opens on a result, `share`, `lead` on a
