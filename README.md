@@ -44,6 +44,16 @@ strings and the shareable-result links need a real server.
        BEEHIIV_API_KEY         from beehiiv, Settings > API
        BEEHIIV_PUBLICATION_ID  looks like pub_xxxxxxxx-xxxx-...
 
+2. **Three custom fields in beehiiv**, under Audience > Custom Fields:
+
+       scorecard_total     integer
+       scorecard_answers   string
+       scorecard_verdict   string
+
+   The endpoint already sends all three. beehiiv discards custom fields it does
+   not recognise and still returns 200, so until they exist the scores are
+   thrown away with no error on either side.
+
    Until both are set, `api/subscribe.js` returns 503, the scorecard shows the
    score with a note saying the sign-up did not go through, and every attempt
    counts a `gate-fail`. So a missing key is visible in the numbers rather than

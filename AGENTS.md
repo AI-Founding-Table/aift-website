@@ -24,6 +24,15 @@ and a token in a static page is a token anybody can read. It reads
 `BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` from the environment. Never put
 a key in a page, and never add a second endpoint without the same reason.
 
+**beehiiv drops custom fields that do not already exist, and still answers
+200.** The endpoint sends `scorecard_total`, `scorecard_answers` and
+`scorecard_verdict`. Unless all three exist under Audience > Custom Fields in
+beehiiv, the subscriber is created and the scores vanish with no error
+anywhere. Confirmed by reading a subscriber back and finding
+`custom_fields: []` after a successful call. If you add a field to the payload,
+create it in beehiiv first, then read one subscriber back to check it landed.
+A 200 from this API is not evidence the data was stored.
+
 ## Run it
 
     python3 -m http.server 4321
