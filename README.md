@@ -32,16 +32,24 @@ strings and the shareable-result links need a real server.
 
 ## Two things to switch on before this goes public
 
-1. **`FORM_ENDPOINT`** near the top of the script tag on both pages is `null`.
-   While it is null, neither page collects anything: the scorecard hides its
-   email block, and the homepage falls back to two mailto links that do work
-   today. Point it at a form endpoint (Formspree, Buttondown, a Vercel function)
-   and the forms appear. Whoever owns that endpoint owns the list.
+1. **`FORM_ENDPOINT`** in the scorecard's script tag is `null`. Create a form at
+   formspree.io and paste the endpoint it gives you in place of `null`. Until
+   then the offer block does not render and the page collects nothing.
 
-2. **Vercel Web Analytics**, switched on in the Vercel dashboard. The script tag
-   is already in the page and is inert until then. Without it there is no way to
-   tell a failed launch from a quiet week, which is the exact failure the
-   scorecard teaches.
+   Formspree stores and forwards. It does not send anything to the person, so
+   the four examples go out by hand. The success copy says so rather than
+   implying an autoresponder that does not exist.
+
+The homepage collects nothing and has no endpoint. The waitlist points at
+Katya's Luma calendar, where Follow already does the job the form would have
+done, and better: Luma notifies followers itself, so a new session cannot go
+out unannounced because someone forgot.
+
+Vercel Web Analytics is on. Events: `start` and `done` on the scorecard,
+`shared-view` when a shared link opens on a result, `share`, `lead` on a
+submission, and `follow` on the homepage. `start` against `done` is the
+completion rate, and `done` against `shared-view` keeps shared links from
+inflating it.
 
 ## How it works
 

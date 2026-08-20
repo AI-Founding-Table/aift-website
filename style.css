@@ -228,6 +228,9 @@ label.opt span.t{font-size:15px}
   text-transform:uppercase;border:1px solid var(--dim);padding:14px 18px;
   transition:background .12s ease,transform .12s ease}
 .join .mail a:hover{background:#1c1a12}
+.join .mail a.primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.join .mail a.primary:hover{background:#d8ba72}
+.join .or{margin-top:22px;font-size:13px}
 .join .mail a:active{transform:translateY(1px)}
 
 /* ---- footer ---- */

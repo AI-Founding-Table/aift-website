@@ -78,27 +78,17 @@
 
   <section class="join" id="contact" aria-labelledby="join-h">
     <h2 id="join-h">Join the list</h2>
-
-    <div id="form" hidden>
-      <p>One email when the next session opens. Nothing else.</p>
-      <div class="row2">
-        <div>
-          <label class="field" for="email">Your email</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" aria-describedby="sendmsg">
-        </div>
-        <button type="button" class="ghost" id="send">Join</button>
-      </div>
-      <p class="hint" id="sendmsg" role="status" style="text-align:left"></p>
-    </div>
-
-    <div id="nolist">
-      <p>Write to either of us and we will tell you when the next one opens.</p>
-      <p class="mail">
-        <a href="mailto:katya@aimarketinghub.pro?subject=AI%20Founding%20Table%20waitlist">Email Katya</a>
-        <a href="mailto:andres@redmage.cc?subject=AI%20Founding%20Table%20waitlist">Email Andres</a>
-      </p>
-    </div>
+    <p>Sessions are capped at 20 seats. Follow the calendar and Luma tells you the moment a new one opens, without anyone having to remember to email you.</p>
+    <p class="mail">
+      <a class="primary" id="follow" href="https://luma.com/katyadominguez" target="_blank" rel="noopener">Follow the calendar<span class="sr"> on Luma (opens in a new tab)</span></a>
+    </p>
+    <p class="or">Or write to us directly.</p>
+    <p class="mail">
+      <a href="mailto:katya@aimarketinghub.pro?subject=AI%20Founding%20Table">Email Katya</a>
+      <a href="mailto:andres@redmage.cc?subject=AI%20Founding%20Table">Email Andres</a>
+    </p>
   </section>
+
   </main>
 
 <footer>
@@ -108,18 +98,8 @@
 </div></div>
 
 <script>
-// ponytail: same switch as the scorecard. Null means the form does not render
-// and the page falls back to two mailto links, which actually work today.
-// Do not swap in a form that quietly goes nowhere.
-var FORM_ENDPOINT = null;
-
 window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments) };
 function count(name){ try{ window.va('event',{name:name}) }catch(e){} }
-
-if(FORM_ENDPOINT){
-  document.getElementById('form').hidden=false;
-  document.getElementById('nolist').hidden=true;
-}
 
 // Drawer. <dialog> handles the trap, Escape, inerting and focus return, so all
 // that is left is opening it, mirroring the state onto aria-expanded, and
@@ -139,27 +119,7 @@ drawer.querySelectorAll('a').forEach(function(a){
 var wide=window.matchMedia('(min-width: 560px)');
 wide.addEventListener('change',function(e){ if(e.matches && drawer.open) drawer.close() });
 
-document.getElementById('send').addEventListener('click',function(){
-  var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');
-  var email=field.value.trim();
-  msg.textContent='';
-  field.removeAttribute('aria-invalid');
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
-    field.setAttribute('aria-invalid','true');
-    msg.textContent='Enter an email address, for example you@company.com.';
-    field.focus(); return;
-  }
-  btn.disabled=true; btn.textContent='Adding';
-  fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-    body:JSON.stringify({email:email,list:'waitlist'})})
-  .then(function(r){ if(!r.ok) throw 0;
-    btn.textContent='You are on it'; field.disabled=true;
-    msg.textContent='One email when the next session opens.';
-    count('waitlist');
-  })
-  .catch(function(){ btn.disabled=false; btn.textContent='Join';
-    msg.textContent='That did not go through. Write to andres@redmage.cc instead.'; });
-});
+document.getElementById('follow').addEventListener('click',function(){ count('follow') });
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
