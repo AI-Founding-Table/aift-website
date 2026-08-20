@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Should you hand this to AI? | AI Founding Table</title>
+<meta name="description" content="Four questions, 90 seconds. Score one piece of your work out of 20 and find out whether AI is the right tool for it.">
+<meta property="og:title" content="Should you hand this to AI?">
+<meta property="og:description" content="Four questions, 90 seconds. Score one piece of your work out of 20.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0b10; --panel:#101017; --line:#2a2a33;
+  --gold:#c9a961; --gold-dim:#8a7440;
+  --white:#f4f2ee; --mute:#8d8d99;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--ink); color:var(--white); font-family:var(--sans);
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  padding:20px 16px 64px;
+}
+.wrap{max-width:640px;margin:0 auto}
+.frame{border:1px solid var(--line);padding:28px 20px 32px}
+.eyebrow{
+  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 22px
+}
+h1{
+  font-family:var(--serif);font-weight:900;text-transform:uppercase;
+  font-size:clamp(38px,12vw,68px);line-height:.92;letter-spacing:-.01em;
+  margin:0 0 4px
+}
+h1 .gold{color:var(--gold);display:block}
+.rule{width:44px;height:1px;background:var(--gold);margin:22px 0}
+.lede{color:var(--mute);max-width:46ch;margin:0}
+.lede b{color:var(--white);font-weight:600}
+
+.q{display:none;border-top:1px solid var(--line);padding:26px 0 4px}
+.q.on{display:block}
+.bar{height:2px;background:var(--line);margin:22px 0 0}
+.bar i{display:block;height:2px;background:var(--gold);width:0;transition:width .28s ease}
+.step{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:10px 0 0}
+.hd{transition:opacity .2s}
+form.started .hd{display:none}
+.qnum{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim)}
+.qtext{font-family:var(--serif);font-weight:700;font-size:clamp(21px,5.5vw,27px);line-height:1.2;margin:8px 0 16px}
+.opts{display:grid;gap:8px}
+label.opt{
+  display:flex;gap:12px;align-items:baseline;cursor:pointer;
+  border:1px solid var(--line);background:var(--panel);
+  padding:13px 14px;transition:border-color .12s,background .12s;
+}
+label.opt:hover{border-color:var(--gold-dim)}
+label.opt input{position:absolute;opacity:0;pointer-events:none}
+label.opt .dot{
+  flex:0 0 auto;width:9px;height:9px;border:1px solid var(--mute);
+  border-radius:50%;transform:translateY(1px)
+}
+label.opt:has(input:checked){border-color:var(--gold);background:#15140f}
+label.opt:has(input:checked) .dot{background:var(--gold);border-color:var(--gold)}
+label.opt:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+label.opt span.t{font-size:15px}
+
+.actions{border-top:1px solid var(--line);padding-top:26px;margin-top:26px}
+.back{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;margin-top:18px}
+.back:hover{color:var(--gold)}
+#go[hidden]{display:none}
+button{
+  font:inherit;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
+  background:var(--gold);color:#0b0b10;border:1px solid var(--gold);
+  padding:15px 22px;width:100%;cursor:pointer
+}
+button[disabled]{background:transparent;color:var(--mute);border-color:var(--line);cursor:not-allowed}
+button.ghost{background:transparent;color:var(--gold);border-color:var(--gold-dim)}
+.hint{color:var(--mute);font-size:13px;margin:12px 0 0;text-align:center}
+
+/* result */
+#result[hidden]{display:none}
+.score{display:flex;align-items:baseline;gap:10px;margin:0 0 2px}
+.score b{font-family:var(--serif);font-size:76px;line-height:1;font-weight:900;color:var(--gold)}
+.score span{color:var(--mute);font-size:15px}
+.verdict{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(30px,9vw,46px);line-height:1;margin:14px 0 0}
+.body p{margin:0 0 14px}
+.weak{border-left:1px solid var(--gold);padding-left:16px;margin:22px 0}
+.weak .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 6px}
+.breakdown{margin:26px 0 0}
+.br{border-top:1px solid var(--line);padding:16px 0}
+.br-top{display:flex;gap:14px;align-items:baseline;justify-content:space-between}
+.br-q{color:var(--mute);font-size:14px;margin:0}
+.br-n{color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px;font-weight:600}
+.rub{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:2px}
+.rub li{display:flex;gap:11px;align-items:baseline;font-size:13px;line-height:1.45;
+  color:var(--mute);padding:6px 9px;border-left:2px solid transparent}
+.rub li b{flex:0 0 auto;color:var(--gold-dim);font-weight:600;font-variant-numeric:tabular-nums}
+.rub li.is{color:var(--white);background:#15140f;border-left-color:var(--gold)}
+.rub li.is b{color:var(--gold)}
+.rub li.is em{margin-left:auto;padding-left:10px;font-style:normal;font-size:10px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.row2{display:grid;gap:10px;margin-top:18px}
+.next{border-top:1px solid var(--line);margin-top:26px;padding-top:26px}
+.next .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 8px}
+.next p{margin:0;font-size:17px}
+.offer{border:1px solid var(--gold-dim);background:#15140f;padding:22px 20px;margin-top:26px}
+.offer h3{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(24px,7vw,32px);line-height:1;margin:0 0 12px}
+.offer p{color:var(--mute);margin:0;font-size:15px}
+.offer p b{color:var(--white);font-weight:600}
+.links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.links a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;cursor:pointer}
+.links a:hover{color:var(--gold)}
+input[type=email]{
+  font:inherit;background:var(--panel);border:1px solid var(--line);
+  color:var(--white);padding:14px;width:100%
+}
+input[type=email]:focus{outline:none;border-color:var(--gold)}
+footer{text-align:center;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
+footer .org{color:var(--white);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin:0}
+footer .ppl{margin:10px 0 0;font-size:12px;color:var(--mute);display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+footer .ppl a{color:var(--mute);text-decoration:none}
+footer .ppl a:hover{color:var(--gold)}
+footer .ppl .bar{color:var(--gold-dim)}
+/* XS: 320 to 359 */
+@media(max-width:359px){
+  body{padding:14px 10px 48px}
+  .frame{padding:22px 16px 26px}
+  h1{font-size:34px}
+  label.opt{padding:12px 12px}
+  label.opt span.t{font-size:14px}
+  .links{gap:16px}
+}
+/* S/M: 560 up */
+@media(min-width:560px){
+  .frame{padding:44px 40px 48px}
+  .row2{grid-template-columns:1fr auto}
+  .row2 button{width:auto}
+  .offer{padding:28px 28px 26px}
+  .br-top{gap:24px}
+}
+/* L/XL: give the page room without stretching the line length */
+@media(min-width:1100px){
+  body{padding:56px 24px 96px;font-size:17px}
+  .wrap{max-width:720px}
+  .frame{padding:56px 56px 60px}
+  .lede{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="frame">
+
+<form id="quiz">
+  <p class="eyebrow">The 90-second test</p>
+  <div class="hd">
+    <h1>Should you<br>hand this<span class="gold">to AI?</span></h1>
+    <div class="rule"></div>
+    <p class="lede">Pick <b>one</b> piece of work you actually do. Not your whole business, one task. Answer four questions about it.</p>
+  </div>
+  <div class="bar"><i id="bar-fill"></i></div>
+  <p class="step" id="step">Question 1 of 4</p>
+  <div id="questions"></div>
+  <div class="actions">
+    <button id="go" type="submit" hidden disabled>See the verdict</button>
+    <p class="hint" id="hint">One question at a time. Nothing is sent anywhere.</p>
+    <a href="#" class="back" id="back" hidden>&larr; Back</a>
+  </div>
+</form>
+
+<div id="result" hidden>
+  <p class="eyebrow">Your score</p>
+  <p class="score"><b id="r-score"></b><span>out of 20</span></p>
+  <h2 class="verdict" id="r-verdict"></h2>
+  <div class="rule"></div>
+  <div class="body"><p id="r-follow"></p></div>
+  <div class="weak" id="r-weakbox">
+    <p class="k">Weakest link</p>
+    <p id="r-weak" style="margin:0"></p>
+  </div>
+  <div class="breakdown" id="r-table"></div>
+
+  <div class="next">
+    <p class="k">What to do next</p>
+    <p id="r-next"></p>
+  </div>
+
+  <div class="offer" id="offer" hidden>
+    <h3>Four real examples,<br>scored</h3>
+    <p>Two that worked and two that did not, with the actual numbers. Including the automation that scored 14 and then quietly stopped running for weeks without anyone noticing.</p>
+    <div class="row2">
+      <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+      <button type="button" class="ghost" id="send">Send them</button>
+    </div>
+    <p class="hint" id="sendmsg" style="text-align:left" hidden></p>
+  </div>
+
+  <p class="links">
+    <a id="share">Share this result</a>
+    <a id="again">Score another task</a>
+  </p>
+</div>
+
+<footer>
+  <p class="org">AI Founding Table</p>
+  <p class="ppl">
+    <a href="mailto:katya@aimarketinghub.pro">Katya</a>
+    <span class="bar">|</span>
+    <a href="mailto:andres@redmage.cc">Andres</a>
+  </p>
+</footer>
+</div></div>
+
+<script>
+// ponytail: the one line that turns this from a quiz into a lead magnet.
+// Point it at a form endpoint (Formspree, Buttondown, a Vercel function) and
+// the offer block appears. Left null on purpose: until it is set, the page
+// shows the score and the next step but never pretends to collect an address.
+// Do not launch this publicly while it is null.
+var FORM_ENDPOINT = null;
+
+// ponytail: Vercel Web Analytics. Inert until it is switched on in the Vercel
+// dashboard, no key needed, no npm install. count('start') and count('done')
+// are the two numbers that tell a failed launch apart from a quiet week.
+window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments) };
+function count(name){ try{ window.va('event',{name:name}) }catch(e){} }
+
+var QUESTIONS = [
+  {q:"How often does this happen?",
+   opts:["Once or twice a year","Every few months","Monthly","Weekly","Daily"],
+   weak:"This does not come around often enough to earn the setup. Automating a yearly task costs more than the task does."},
+  {q:"What does one round cost you, in time or money?",
+   opts:["Negligible","Minor","Noticeable","A real chunk of a day","Material every single time"],
+   weak:"Each round is cheap, so there is little to buy back. Find the version of this that actually hurts."},
+  {q:"If the output is wrong, would you notice?",
+   opts:["No. Silent, expensive, or hard to reverse","Hard to spot and costly to undo","Someone would catch it eventually","Caught quickly, small cost to fix","Immediately, and cheap to fix"],
+   weak:"You would not notice this failing. Build the check before you build the automation. A day with no output looks exactly like a quiet day."},
+  {q:"Could you explain how you do it to a new hire, in writing?",
+   opts:["No, it lives in my head","I could try, it would take a while","Partly written, mostly habit","I could write it up in an hour","It is already written down"],
+   weak:"You cannot hand this to a model until you could hand it to a person. Writing it down is the work that comes first."}
+];
+
+var BANDS = [
+  {min:16,v:"Strong candidate",f:"Start here. Before you build anything, write the process down properly. The quality of that document is the quality of the result.",n:"Write this process down the way you would hand it to a new hire, in full. That document is what you feed the tool, and it is the whole job."},
+  {min:11,v:"Fixable",f:"Not yet, but close. There is one gap doing the damage, and it is cheaper to close than to work around.",n:"Close the gap above first. Building on top of it now just means building the failure in."},
+  {min:6,v:"Wrong candidate",f:"Score something else. Almost everyone's first instinct lands here, which is why the first AI project so often gets used once and abandoned.",n:"Score a different task. Look for one that happens weekly and costs you something every time."},
+  {min:0,v:"Not an AI problem",f:"This one is not it. Rare, cheap, invisible when it breaks, and undocumented. Spend the effort somewhere with a return.",n:"Score a different task. This one is not the problem worth solving, and no tool changes that."}
+];
+
+var qEl=document.getElementById('questions'), form=document.getElementById('quiz'), go=document.getElementById('go');
+QUESTIONS.forEach(function(item,i){
+  var d=document.createElement('div'); d.className='q';
+  d.innerHTML='<p class="qtext"></p><div class="opts"></div>';
+  d.querySelector('.qtext').textContent=item.q;
+  var box=d.querySelector('.opts');
+  item.opts.forEach(function(text,j){
+    var l=document.createElement('label'); l.className='opt';
+    l.innerHTML='<input type="radio" name="q'+i+'" value="'+(j+1)+'"><i class="dot"></i><span class="t"></span>';
+    l.querySelector('.t').textContent=text;
+    box.appendChild(l);
+  });
+  qEl.appendChild(d);
+});
+
+function answers(){
+  return QUESTIONS.map(function(_,i){
+    var c=form.querySelector('input[name=q'+i+']:checked');
+    return c?+c.value:0;
+  });
+}
+var steps=qEl.querySelectorAll('.q'), step=0;
+var bar=document.getElementById('bar-fill'), stepEl=document.getElementById('step');
+var back=document.getElementById('back'), hint=document.getElementById('hint');
+
+function show(n){
+  step=Math.max(0,Math.min(QUESTIONS.length-1,n));
+  steps.forEach(function(el,i){ el.classList.toggle('on',i===step) });
+  stepEl.textContent='Question '+(step+1)+' of '+QUESTIONS.length;
+  bar.style.width=((step+(answers()[step]?1:0))/QUESTIONS.length*100)+'%';
+  back.hidden=step===0;
+  var lastQ=step===QUESTIONS.length-1;
+  go.hidden=!lastQ;
+  go.disabled=!answers().every(function(n){return n>0});
+  hint.hidden=lastQ;
+  if(form.classList.contains('started')) window.scrollTo(0,0);
+}
+
+form.addEventListener('change',function(){
+  form.classList.add('started');
+  bar.style.width=((step+1)/QUESTIONS.length*100)+'%';
+  if(step<QUESTIONS.length-1){ setTimeout(function(){ show(step+1) },240); }
+  else{ go.disabled=!answers().every(function(n){return n>0}); }
+});
+
+back.addEventListener('click',function(e){ e.preventDefault(); show(step-1) });
+show(0);
+
+var started=false;
+form.addEventListener('change',function(){ if(!started){ started=true; count('start') } });
+
+// ponytail: shared links carry the four answers as ?s=4535 so they open on the
+// result instead of a cold start screen.
+var seed=(location.search.match(/[?&]s=([1-5]{4})/)||[])[1];
+if(seed){
+  var a=seed.split('').map(Number);
+  a.forEach(function(v,i){ var el=form.querySelector('input[name=q'+i+'][value="'+v+'"]'); if(el) el.checked=true });
+  render(a,true);
+}
+
+var last='';
+function render(a,fromLink){
+  var total=a.reduce(function(x,y){return x+y},0);
+  var band=BANDS.find(function(b){return total>=b.min});
+  var lowest=Math.min.apply(null,a), idx=a.indexOf(lowest);
+
+  document.getElementById('r-score').textContent=total;
+  document.getElementById('r-verdict').textContent=band.v;
+  document.getElementById('r-follow').textContent=band.f;
+  document.getElementById('r-next').textContent=band.n;
+
+  var weakBox=document.getElementById('r-weakbox');
+  if(lowest>=4){ weakBox.hidden=true; }
+  else{ weakBox.hidden=false; document.getElementById('r-weak').textContent=QUESTIONS[idx].weak; }
+
+  var tb=document.getElementById('r-table'); tb.innerHTML='';
+  QUESTIONS.forEach(function(item,i){
+    var row=document.createElement('div'); row.className='br';
+    row.innerHTML='<div class="br-top"><p class="br-q"></p><p class="br-n">'+a[i]+' / 5</p></div><ol class="rub"></ol>';
+    row.querySelector('.br-q').textContent=item.q;
+    var rub=row.querySelector('.rub');
+    item.opts.forEach(function(text,j){
+      var li=document.createElement('li');
+      if(j+1===a[i]) li.className='is';
+      li.innerHTML='<b>'+(j+1)+'</b><span></span>'+(j+1===a[i]?'<em>you</em>':'');
+      li.querySelector('span').textContent=text;
+      rub.appendChild(li);
+    });
+    tb.appendChild(row);
+  });
+
+  last=total+'/20. '+band.v+'. '+(lowest<4?'Weakest link: '+QUESTIONS[idx].q+' ('+lowest+'/5).':'No weak link.')+' Scored with the 90-second AI use-case test.';
+
+  document.getElementById('offer').hidden=!FORM_ENDPOINT;
+  form.hidden=true;
+  document.getElementById('result').hidden=false;
+  window.scrollTo(0,0);
+  try{ history.replaceState(null,'','?s='+a.join('')) }catch(e){} // file:// and data: have no history
+  count(fromLink?'shared-view':'done'); // a shared link is a view, not a completion
+}
+
+form.addEventListener('submit',function(e){ e.preventDefault(); render(answers()) });
+
+document.getElementById('share').addEventListener('click',function(){
+  var btn=this;
+  var text=last+'\n'+location.href;
+  count('share');
+  if(navigator.share){ navigator.share({text:text}).catch(function(){}); return; }
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent='Copied'; setTimeout(function(){btn.textContent='Share this result'},1800);
+  });
+});
+
+document.getElementById('send').addEventListener('click',function(){
+  var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');
+  var email=field.value.trim();
+  msg.hidden=true;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ field.focus(); return; }
+  btn.disabled=true; btn.textContent='Sending';
+  fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({email:email,result:last,answers:answers()})})
+  .then(function(r){ if(!r.ok) throw 0;
+    btn.textContent='On its way'; field.disabled=true;
+    msg.hidden=false; msg.textContent='Check your inbox. Nothing else follows unless you ask for it.';
+    count('lead');
+  })
+  .catch(function(){ btn.disabled=false; btn.textContent='Send them';
+    msg.hidden=false; msg.textContent='That did not go through. Try again, or write to hello@aifoundingtable.com.'; });
+});
+
+document.getElementById('again').addEventListener('click',function(e){
+  e.preventDefault(); form.reset(); form.classList.remove('started'); go.disabled=true; show(0);
+  try{ history.replaceState(null,'',location.pathname) }catch(e){}
+  document.getElementById('result').hidden=true; form.hidden=false; window.scrollTo(0,0);
+});
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
