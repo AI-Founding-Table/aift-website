@@ -16,11 +16,41 @@
 <body>
 <div class="wrap"><div class="frame home">
 
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="masthead">
+    <p class="mark"><a href="/">AI Founding Table</a></p>
+    <nav aria-label="Sections of this page">
+      <ul>
+        <li><a href="#who">Who it is for</a></li>
+        <li><a href="#scorecard">Scorecard</a></li>
+        <li><a href="#sessions">Sessions</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main id="main">
   <p class="eyebrow reveal" style="--i:0">Barcelona</p>
   <h1 class="reveal" style="--i:1">AI Founding<span class="gold">Table</span></h1>
   <div class="rule reveal" style="--i:2"></div>
   <p class="lede reveal" style="--i:3">Most business owners have already tried AI. Few have made it a repeatable part of the business.</p>
-  <p class="hero-cta reveal" style="--i:4"><a href="#sessions">See upcoming sessions</a></p>
+  <p class="hero-cta reveal" style="--i:4">
+    <a class="primary" href="#contact">Join the list</a>
+    <a href="#sessions">See sessions</a>
+  </p>
+
+  <section class="sec" id="who">
+    <h2>Who it is for</h2>
+    <p>You do not need more prompts or a complicated agent setup. You need one repeated, valuable piece of work and a practical way for AI to support it.</p>
+    <p class="who">Founders, agency owners and small-business operators with an established business and real work to improve. No technical background is required. A real business process is.</p>
+  </section>
+
+  <section class="sec" id="scorecard">
+    <h2>AI readiness scorecard</h2>
+    <p>Pick one task you actually do. Four questions, 90 seconds, and a score out of 20 that tells you whether to hand it to AI. Often the answer is no, and it will say so.</p>
+    <a class="go" href="/ai-readiness-scorecard/">Take the scorecard</a>
+  </section>
 
   <section class="sec" id="sessions">
     <h2>Upcoming sessions</h2>
@@ -30,19 +60,7 @@
     <p class="tiny"><a href="https://luma.com/katyadominguez" target="_blank" rel="noopener">See every session on Luma<span class="sr"> (opens in a new tab)</span></a></p>
   </section>
 
-  <section class="sec">
-    <h2>Who it is for</h2>
-    <p>You do not need more prompts or a complicated agent setup. You need one repeated, valuable piece of work and a practical way for AI to support it.</p>
-    <p class="who">Founders, agency owners and small-business operators with an established business and real work to improve. No technical background is required. A real business process is.</p>
-  </section>
-
-  <section class="sec">
-    <h2>AI readiness scorecard</h2>
-    <p>Pick one task you actually do. Four questions, 90 seconds, and a score out of 20 that tells you whether to hand it to AI. Often the answer is no, and it will say so.</p>
-    <a class="go" href="/ai-readiness-scorecard/">Take the scorecard</a>
-  </section>
-
-  <section class="join" aria-labelledby="join-h">
+  <section class="join" id="contact" aria-labelledby="join-h">
     <h2 id="join-h">Join the list</h2>
 
     <div id="form" hidden>
@@ -65,6 +83,7 @@
       </p>
     </div>
   </section>
+  </main>
 
 <footer>
   <p class="org">AI Founding Table</p>

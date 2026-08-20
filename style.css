@@ -37,9 +37,32 @@ body{
    a ring there reads as a design mistake, and the heading is announced anyway. */
 [tabindex="-1"]:focus{outline:none}
 
+/* Skip link. Real nav on more than one page means 2.4.1 applies. */
+.skip{position:absolute;left:-9999px;top:0;z-index:10}
+.skip:focus{left:0;position:static;display:inline-block;background:var(--gold);
+  color:var(--ink);padding:12px 16px;font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;text-decoration:none;margin-bottom:16px}
+
 /* Screen-reader-only, for labels the design carries visually. */
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
   clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* ---- masthead ----
+   Anchor nav, not routes. One page, four sections. It wraps to two rows below
+   560 on purpose: the single-line rule is a desktop rule, and a hamburger for
+   four in-page anchors would be theatre. */
+.masthead{display:flex;gap:14px 22px;align-items:baseline;justify-content:space-between;
+  flex-wrap:wrap;margin:0 0 30px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.mark{font-family:var(--serif);font-weight:900;text-transform:uppercase;
+  font-size:15px;letter-spacing:.02em;margin:0}
+.mark a{color:var(--white);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+.mark a:hover{color:var(--gold)}
+.masthead nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:2px 20px;margin:0;padding:0}
+.masthead nav a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--mute);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+.masthead nav a:hover{color:var(--gold)}
+/* Anchored sections should not land flush against the top edge. */
+:target{scroll-margin-top:20px}
 
 /* ---- type ---- */
 .eyebrow{font-size:11px;letter-spacing:var(--caps);text-transform:uppercase;
@@ -145,12 +168,14 @@ label.opt span.t{font-size:15px}
 /* ---- homepage ---- */
 .home h1{margin-bottom:0}
 .home .lede{font-size:17px;max-width:38ch}
-.hero-cta{margin-top:28px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
 .hero-cta a{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
   letter-spacing:.24em;text-transform:uppercase;border:1px solid var(--dim);padding:15px 22px;
-  transition:background .12s ease,transform .12s ease}
+  white-space:nowrap;transition:background .12s ease,transform .12s ease}
 .hero-cta a:hover{background:var(--sel)}
 .hero-cta a:active{transform:translateY(1px)}
+.hero-cta a.primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.hero-cta a.primary:hover{background:#d8ba72}
 .sec{border-top:1px solid var(--line);margin-top:40px;padding-top:32px}
 .sec p{margin:0 0 16px;color:var(--mute);max-width:52ch}
 .sec a.go{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
@@ -189,6 +214,7 @@ footer .ppl .bar{color:var(--dim);padding:0 10px;background:none;height:auto;dis
    would read it. Everything else is hover and state feedback. All of it off
    under prefers-reduced-motion, including the progress bar's width tween. */
 @media (prefers-reduced-motion: no-preference){
+  html{scroll-behavior:smooth}
   .reveal{animation:rise .7s cubic-bezier(.16,1,.3,1) both;
     animation-delay:calc(var(--i,0) * 90ms)}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -203,6 +229,10 @@ footer .ppl .bar{color:var(--dim);padding:0 10px;background:none;height:auto;dis
   body{padding:14px 10px 48px}
   .frame{padding:22px 16px 26px}
   h1{font-size:34px}
+  .masthead{margin-bottom:20px;padding-bottom:14px;gap:8px 16px}
+  .mark{font-size:14px}
+  .hero-cta{margin-top:20px;gap:8px}
+  .hero-cta a{padding:14px 18px}
   label.opt{padding:12px}
   label.opt span.t{font-size:14px}
   .links{gap:16px}

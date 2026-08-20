@@ -8,9 +8,17 @@ Katya Dominguez and Andres. Lives at aifoundingtable.com.
 
 ## Pages
 
-    /                          waitlist homepage
+    /                          homepage: who it is for, scorecard, sessions, contact
     /ai-readiness-scorecard/   the four-question scorecard
     style.css                  shared design, edit here not per page
+
+The homepage is one page with anchor navigation, not routes. When there is a
+second resource alongside the scorecard, the nav item and the section heading
+both become Resources and it can move to its own page. One item is not a
+library, so it is named for what it actually is until then.
+
+The scorecard gets the wordmark and two links, not the full nav. It is a
+single-task page and a full nav there is an invitation to abandon the quiz.
 
 Static files, no build step, no dependencies, no framework. Vercel serves the
 folder as-is with no configuration, and folder names become the URL paths.
