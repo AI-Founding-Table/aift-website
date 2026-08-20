@@ -84,11 +84,20 @@
 </div></div>
 
 <script>
-// ponytail: the one line that turns this from a quiz into a lead magnet.
-// Point it at a form endpoint (Formspree, Buttondown, a Vercel function) and
-// the offer block appears. Left null on purpose: until it is set, the page
-// shows the score and the next step but never pretends to collect an address.
-// Do not launch this publicly while it is null.
+// The one line that turns this from a quiz into a lead magnet.
+//
+// Formspree. Create a form at formspree.io, copy the endpoint it gives you, and
+// paste it here in place of null:
+//
+//     var FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx";
+//
+// The submission arrives in the Formspree inbox and is forwarded on by email,
+// carrying the address, the result line, and the four scores. Formspree stores
+// and forwards. It does not send anything to the person, so the four examples
+// go out by hand. The copy below says so rather than implying an autoresponder.
+//
+// While this is null the offer block does not render, so the page shows the
+// score and the next step and never pretends to collect an address.
 var FORM_ENDPOINT = null;
 
 // ponytail: Vercel Web Analytics. Inert until it is switched on in the Vercel
@@ -184,6 +193,11 @@ show(0,false);
 var started=false;
 form.addEventListener('change',function(){ if(!started){ started=true; count('start') } });
 
+// Declared before the deep-link block below, because that block calls render()
+// and render() writes to it. Declaring it afterwards wiped the share text on
+// every shared link.
+var lastText='';
+
 // ponytail: shared links carry the four answers as ?s=4535 so they open on the
 // result instead of a cold start screen.
 var seed=(location.search.match(/[?&]s=([1-5]{4})/)||[])[1];
@@ -193,7 +207,6 @@ if(seed){
   render(a,true);
 }
 
-var lastText='';
 function render(a,fromLink){
   var total=a.reduce(function(x,y){return x+y},0);
   var band=BANDS.find(function(b){return total>=b.min});
@@ -270,8 +283,8 @@ document.getElementById('send').addEventListener('click',function(){
   fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
     body:JSON.stringify({email:email,result:lastText,answers:answers()})})
   .then(function(r){ if(!r.ok) throw 0;
-    btn.textContent='On its way'; field.disabled=true;
-    msg.textContent='Check your inbox. Nothing else follows unless you ask for it.';
+    btn.textContent='Got it'; field.disabled=true;
+    msg.textContent='We have your address. The four examples come from a person, not a robot, so give it a day. Nothing else follows unless you ask for it.';
     count('lead');
   })
   .catch(function(){ btn.disabled=false; btn.textContent='Send them';
