@@ -18,8 +18,24 @@
 
   <a class="skip" href="#main">Skip to content</a>
 
-  <div class="masthead">
+  <header class="masthead">
     <p class="mark"><a href="/">AI Founding Table</a></p>
+    <nav class="inline" aria-label="Sections of this page">
+      <ul>
+        <li><a href="#who">Who it is for</a></li>
+        <li><a href="#scorecard">Scorecard</a></li>
+        <li><a href="#sessions">Sessions</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="drawer">Menu</button>
+  </header>
+
+  <dialog class="drawer" id="drawer" aria-label="Sections of this page">
+    <div class="drawer-top">
+      <p>Menu</p>
+      <button type="button" class="drawer-close" id="drawer-close">Close</button>
+    </div>
     <nav aria-label="Sections of this page">
       <ul>
         <li><a href="#who">Who it is for</a></li>
@@ -28,9 +44,9 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
-  </div>
+  </dialog>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
   <p class="eyebrow reveal" style="--i:0">Barcelona</p>
   <h1 class="reveal" style="--i:1">AI Founding<span class="gold">Table</span></h1>
   <div class="rule reveal" style="--i:2"></div>
@@ -104,6 +120,24 @@ if(FORM_ENDPOINT){
   document.getElementById('form').hidden=false;
   document.getElementById('nolist').hidden=true;
 }
+
+// Drawer. <dialog> handles the trap, Escape, inerting and focus return, so all
+// that is left is opening it, mirroring the state onto aria-expanded, and
+// closing on a link or a backdrop click.
+var drawer=document.getElementById('drawer'), menuBtn=document.getElementById('menu-btn');
+function setExpanded(){ menuBtn.setAttribute('aria-expanded', drawer.open?'true':'false') }
+menuBtn.addEventListener('click',function(){ drawer.showModal(); setExpanded() });
+document.getElementById('drawer-close').addEventListener('click',function(){ drawer.close() });
+drawer.addEventListener('close',setExpanded);
+drawer.addEventListener('cancel',setExpanded);
+drawer.addEventListener('click',function(e){ if(e.target===drawer) drawer.close() }); // backdrop
+drawer.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click',function(){ drawer.close() });
+});
+// Rotating to landscape hides the toggle. Close the drawer with it rather than
+// leaving a modal open whose opener has gone.
+var wide=window.matchMedia('(min-width: 560px)');
+wide.addEventListener('change',function(e){ if(e.matches && drawer.open) drawer.close() });
 
 document.getElementById('send').addEventListener('click',function(){
   var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');

@@ -16,11 +16,12 @@
 <body>
 <div class="wrap"><div class="frame">
 
-<div class="masthead">
+<header class="masthead">
   <p class="mark"><a href="/">AI Founding Table</a></p>
-  <nav aria-label="Sections of this page"><ul><li><a href="/#sessions">Sessions</a></li><li><a href="/#contact">Contact</a></li></ul></nav>
-</div>
+  <nav class="inline-always" aria-label="Sections of this page"><ul><li><a href="/#sessions">Sessions</a></li><li><a href="/#contact">Contact</a></li></ul></nav>
+</header>
 
+<main id="main" tabindex="-1">
 <form id="quiz">
   <p class="eyebrow reveal" style="--i:0">The 90-second test</p>
   <div class="hd">
@@ -71,10 +72,10 @@
   </section>
 
   <p class="links">
-    <a id="share" href="#" role="button">Share this result</a>
-    <a id="again" href="#">Score another task</a>
+    <button type="button" id="share">Share this result</button>
+    <button type="button" id="again">Score another task</button>
   </p>
-</div>
+</main>
 
 <footer>
   <p class="org"><a href="/">AI Founding Table</a></p>
@@ -246,8 +247,7 @@ form.addEventListener('submit',function(e){
   if(complete()) render(answers());
 });
 
-document.getElementById('share').addEventListener('click',function(e){
-  e.preventDefault();
+document.getElementById('share').addEventListener('click',function(){
   var btn=this, text=lastText+'\n'+location.href;
   count('share');
   if(navigator.share){ navigator.share({text:text}).catch(function(){}); return; }
@@ -278,8 +278,8 @@ document.getElementById('send').addEventListener('click',function(){
     msg.textContent='That did not go through. Try again, or write to andres@redmage.cc.'; });
 });
 
-document.getElementById('again').addEventListener('click',function(e){
-  e.preventDefault(); form.reset(); form.classList.remove('started'); kb=false;
+document.getElementById('again').addEventListener('click',function(){
+  form.reset(); form.classList.remove('started'); kb=false;
   document.getElementById('result').hidden=true; form.hidden=false;
   show(0,true); window.scrollTo(0,0);
   try{ history.replaceState(null,'',location.pathname) }catch(e){}

@@ -77,6 +77,13 @@ Targets WCAG 2.2 AA. What that meant in practice:
 - Inputs have real labels above them, never a placeholder standing in.
 - All motion sits behind `prefers-reduced-motion: no-preference`, with a reduce
   block that switches off animation and transition.
+- The mobile drawer is a modal `<dialog>`, not a hand-rolled panel. The platform
+  supplies the focus trap, Escape to close, inerting of the page behind it, and
+  focus returning to the toggle. What is left in script is opening it, mirroring
+  the state onto `aria-expanded`, closing on a link or backdrop click, and
+  closing it if the viewport widens past the toggle.
+- Share and Score another task are `<button>`s, not links with a button role, so
+  Space works as well as Enter.
 
 Checked at 320, 375, 768, 1280 and 1920, with the 1.4.12 text-spacing overrides
 applied: no horizontal scrolling, no clipping, no target under 24px.
