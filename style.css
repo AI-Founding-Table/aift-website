@@ -254,10 +254,20 @@ footer .org{color:var(--white);font-size:11px;letter-spacing:var(--caps);
   text-transform:uppercase;margin:0}
 footer .org a{color:inherit;text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
 footer .org a:hover{color:var(--gold)}
-footer .ppl{margin:6px 0 0;font-size:12px;color:var(--mute)}
-footer .ppl a{color:var(--mute);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
-footer .ppl a:hover{color:var(--gold)}
-footer .ppl .bar{color:var(--dim);padding:0 10px;background:none;height:auto;display:inline;margin:0}
+/* Two names mirrored around a centre gutter: Katya's block ranged right,
+   Andres's ranged left. Stacks and centres below 460, where two addresses
+   side by side would not fit. */
+footer .ppl{margin:16px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:0 32px;max-width:540px}
+footer .ppl>div:first-child{text-align:right}
+footer .ppl>div:last-child{text-align:left}
+footer .nm{color:var(--white);font-size:11px;letter-spacing:.24em;text-transform:uppercase;margin:0}
+footer .em{margin:2px 0 0;font-size:12px}
+footer .em a{color:var(--mute);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+footer .em a:hover{color:var(--gold)}
+@media(max-width:459px){
+  footer .ppl{grid-template-columns:1fr;gap:16px;max-width:none}
+  footer .ppl>div:first-child,footer .ppl>div:last-child{text-align:center}
+}
 
 /* ---- motion ----
    One staggered reveal on first paint. It sequences the poster the way the eye

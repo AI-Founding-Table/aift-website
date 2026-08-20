@@ -47,7 +47,10 @@ that you cannot see from here.
 - **Analytics event names**: `start`, `gate-view`, `lead`, `gate-fail`, `done`,
   `shared-view`, `share`, `follow`, `whatsapp`. Renaming one orphans its
   history in Vercel.
-- **Section anchors** `#who`, `#scorecard`, `#sessions`, `#contact`.
+- **Section anchors** `#who`, `#scorecard`, `#sessions`, `#contact`. The last
+  one is labelled Join in the nav, because the block invites people in rather
+  than listing contact details. The id stayed `contact` so existing links keep
+  working. Contact details live in the footer.
 
 ## The rule behind the whole thing
 
