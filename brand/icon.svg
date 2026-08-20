@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="AI Founding Table">
+  <rect width="512" height="512" fill="#0b0b10"/>
+  <rect x="24" y="24" width="464" height="464" fill="none" stroke="#9c8450" stroke-width="4"/>
+  <text x="256" y="118" text-anchor="middle" fill="#c9a961"
+        font-family="Geist, Helvetica, Arial, sans-serif" font-size="24" letter-spacing="8">BARCELONA</text>
+  <text x="256" y="252" text-anchor="middle"
+        font-family="Playfair Display, Georgia, Times New Roman, serif" font-weight="900" font-size="96" letter-spacing="1" fill="#f4f2ee">AI</text>
+  <text x="256" y="348" text-anchor="middle"
+        font-family="Playfair Display, Georgia, Times New Roman, serif" font-weight="900" font-size="60" letter-spacing="1" fill="#c9a961">FOUNDING</text>
+  <text x="256" y="410" text-anchor="middle"
+        font-family="Playfair Display, Georgia, Times New Roman, serif" font-weight="900" font-size="60" letter-spacing="1" fill="#f4f2ee">TABLE</text>
+  <rect x="222" y="440" width="68" height="3" fill="#c9a961"/>
+</svg>
