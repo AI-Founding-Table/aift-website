@@ -1,10 +1,16 @@
-# AI use-case scorecard
+# AI Founding Table
 
-Four questions, 90 seconds. Scores one piece of a business's work out of 20 and
-says whether to hand it to AI, including when the honest answer is no.
+The website. Live at aifoundingtable.com.
 
-Built for "AI for Business Owners | Practical Use Cases", Barcelona, Aug 21 2026.
-Katya Dominguez and Andres. Lives at aifoundingtable.com.
+A room of business owners in Barcelona working out where AI earns its place.
+Katya Dominguez and Andres.
+
+The scorecard is one page of it: four questions, 90 seconds, scoring one piece
+of a business's work out of 20 and saying whether to hand it to AI, including
+when the honest answer is no. Built for "AI for Business Owners | Practical Use
+Cases", Aug 21 2026.
+
+**Working on this repo, human or agent? Read [AGENTS.md](AGENTS.md) first.**
 
 ## Pages
 
