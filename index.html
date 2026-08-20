@@ -10,57 +10,65 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="wrap"><div class="frame home">
 
-  <p class="eyebrow">Barcelona</p>
-  <h1>AI Founding<span class="gold">Table</span></h1>
-  <div class="rule"></div>
-  <p class="lede">Most business owners have already tried AI. Few have turned it into a repeatable part of how the business runs.</p>
-  <p class="lede">You do not need more prompts or a complicated agent setup. You need one repeated, valuable piece of work and a practical way for AI to support it.</p>
-  <p class="who">For founders, agency owners and small-business operators with an established business and real work to improve. No technical background is required. A real business process is.</p>
+  <p class="eyebrow reveal" style="--i:0">Barcelona</p>
+  <h1 class="reveal" style="--i:1">AI Founding<span class="gold">Table</span></h1>
+  <div class="rule reveal" style="--i:2"></div>
+  <p class="lede reveal" style="--i:3">Most business owners have already tried AI. Few have made it a repeatable part of the business.</p>
+  <p class="hero-cta reveal" style="--i:4"><a href="#sessions">See upcoming sessions</a></p>
 
-  <div class="sec">
-    <p class="k">Upcoming sessions</p>
+  <section class="sec" id="sessions">
+    <h2>Upcoming sessions</h2>
+    <p>One hour, in a room, on one practical use case. Sessions are capped at 20 seats.</p>
     <iframe class="cal" src="https://lu.ma/embed/calendar/cal-MtIVhtsqmeoQYb7/events"
-      title="Upcoming AI Founding Table sessions" loading="lazy" allowfullscreen
-      aria-hidden="false" frameborder="0"></iframe>
-    <p class="tiny"><a href="https://luma.com/katyadominguez" target="_blank" rel="noopener">See every session on Luma</a></p>
-  </div>
+      title="Upcoming AI Founding Table sessions on Luma" loading="lazy"></iframe>
+    <p class="tiny"><a href="https://luma.com/katyadominguez" target="_blank" rel="noopener">See every session on Luma<span class="sr"> (opens in a new tab)</span></a></p>
+  </section>
 
-  <div class="sec">
-    <p class="k">AI readiness scorecard</p>
+  <section class="sec">
+    <h2>Who it is for</h2>
+    <p>You do not need more prompts or a complicated agent setup. You need one repeated, valuable piece of work and a practical way for AI to support it.</p>
+    <p class="who">Founders, agency owners and small-business operators with an established business and real work to improve. No technical background is required. A real business process is.</p>
+  </section>
+
+  <section class="sec">
+    <h2>AI readiness scorecard</h2>
     <p>Pick one task you actually do. Four questions, 90 seconds, and a score out of 20 that tells you whether to hand it to AI. Often the answer is no, and it will say so.</p>
     <a class="go" href="/ai-readiness-scorecard/">Take the scorecard</a>
-  </div>
+  </section>
 
-  <div class="join">
-    <h2>Join the list</h2>
+  <section class="join" aria-labelledby="join-h">
+    <h2 id="join-h">Join the list</h2>
 
     <div id="form" hidden>
       <p>One email when the next session opens. Nothing else.</p>
       <div class="row2">
-        <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+        <div>
+          <label class="field" for="email">Your email</label>
+          <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" aria-describedby="sendmsg">
+        </div>
         <button type="button" class="ghost" id="send">Join</button>
       </div>
-      <p class="hint" id="sendmsg" style="text-align:left" hidden></p>
+      <p class="hint" id="sendmsg" role="status" style="text-align:left"></p>
     </div>
 
     <div id="nolist">
-      <p>Sessions are capped at 20 seats. Write to either of us and we will tell you when the next one opens.</p>
+      <p>Write to either of us and we will tell you when the next one opens.</p>
       <p class="mail">
         <a href="mailto:katya@aimarketinghub.pro?subject=AI%20Founding%20Table%20waitlist">Email Katya</a>
         <a href="mailto:andres@redmage.cc?subject=AI%20Founding%20Table%20waitlist">Email Andres</a>
       </p>
     </div>
-  </div>
+  </section>
 
 <footer>
   <p class="org">AI Founding Table</p>
-  <p class="ppl"><a href="mailto:katya@aimarketinghub.pro">Katya</a><span class="bar">|</span><a href="mailto:andres@redmage.cc">Andres</a></p>
+  <p class="ppl"><a href="mailto:katya@aimarketinghub.pro">Katya</a><span class="bar" aria-hidden="true">|</span><a href="mailto:andres@redmage.cc">Andres</a></p>
 </footer>
 </div></div>
 
@@ -81,18 +89,23 @@ if(FORM_ENDPOINT){
 document.getElementById('send').addEventListener('click',function(){
   var btn=this, field=document.getElementById('email'), msg=document.getElementById('sendmsg');
   var email=field.value.trim();
-  msg.hidden=true;
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ field.focus(); return; }
+  msg.textContent='';
+  field.removeAttribute('aria-invalid');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    field.setAttribute('aria-invalid','true');
+    msg.textContent='Enter an email address, for example you@company.com.';
+    field.focus(); return;
+  }
   btn.disabled=true; btn.textContent='Adding';
   fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
     body:JSON.stringify({email:email,list:'waitlist'})})
   .then(function(r){ if(!r.ok) throw 0;
     btn.textContent='You are on it'; field.disabled=true;
-    msg.hidden=false; msg.textContent='One email when the next session opens.';
+    msg.textContent='One email when the next session opens.';
     count('waitlist');
   })
   .catch(function(){ btn.disabled=false; btn.textContent='Join';
-    msg.hidden=false; msg.textContent='That did not go through. Write to andres@redmage.cc instead.'; });
+    msg.textContent='That did not go through. Write to andres@redmage.cc instead.'; });
 });
 </script>
 <script defer src="/_vercel/insights/script.js"></script>

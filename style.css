@@ -1,10 +1,25 @@
-/* Shared across every AI Founding Table page. Edit here, not per page. */
+/* AI Founding Table.
+   Shared across every page. Edit here, not per page.
+
+   The look comes from the event covers: near-black ground, a hairline frame,
+   letterspaced gold caps, and a Didone display with one line dropped to gold.
+   Type is Playfair Display (the covers' Didone) over Geist (the covers' caps).
+
+   Colour tokens are contrast-checked against WCAG 2.2 AA:
+     mute   on ink   5.99:1     gold     on ink  8.72:1
+     dim    on ink   5.45:1     white    on ink 17.56:1
+     edge   on ink   3.69:1  (1.4.11, control borders)
+     line is decorative rules only. Never a control boundary. */
+
 :root{
-  --ink:#0b0b10; --panel:#101017; --line:#2a2a33;
-  --gold:#c9a961; --gold-dim:#8a7440;
+  --ink:#0b0b10; --panel:#101017; --sel:#15140f;
+  --line:#2a2a33;          /* decorative separators */
+  --edge:#6a6a78;          /* borders of real controls, 3:1 minimum */
+  --gold:#c9a961; --dim:#9c8450;
   --white:#f4f2ee; --mute:#8d8d99;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  --sans:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --caps:.32em;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -15,150 +30,194 @@ body{
 }
 .wrap{max-width:640px;margin:0 auto}
 .frame{border:1px solid var(--line);padding:28px 20px 32px}
-.eyebrow{
-  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--gold);margin:0 0 22px
-}
-h1{
-  font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:clamp(38px,12vw,68px);line-height:.92;letter-spacing:-.01em;
-  margin:0 0 4px
-}
+
+/* Focus. One ring, on everything, never removed. */
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* Except headings we move focus to programmatically. They are not controls, so
+   a ring there reads as a design mistake, and the heading is announced anyway. */
+[tabindex="-1"]:focus{outline:none}
+
+/* Screen-reader-only, for labels the design carries visually. */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* ---- type ---- */
+.eyebrow{font-size:11px;letter-spacing:var(--caps);text-transform:uppercase;
+  color:var(--gold);margin:0 0 22px}
+h1{font-family:var(--serif);font-weight:900;text-transform:uppercase;
+  font-size:clamp(38px,12vw,68px);line-height:.92;letter-spacing:-.01em;margin:0 0 4px}
 h1 .gold{color:var(--gold);display:block}
+h2{font-family:var(--serif);font-weight:900;text-transform:uppercase;
+  font-size:clamp(26px,7vw,36px);line-height:1;margin:0 0 14px}
 .rule{width:44px;height:1px;background:var(--gold);margin:22px 0}
 .lede{color:var(--mute);max-width:46ch;margin:0}
 .lede b{color:var(--white);font-weight:600}
 
-.q{display:none;border-top:1px solid var(--line);padding:26px 0 4px}
-.q.on{display:block}
+/* ---- controls ---- */
+button{font:inherit;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
+  background:var(--gold);color:var(--ink);border:1px solid var(--gold);
+  padding:15px 22px;width:100%;cursor:pointer;
+  transition:transform .12s ease,background .12s ease}
+button:hover{background:#d8ba72}
+button:active{transform:translateY(1px)}
+button[disabled]{background:transparent;color:var(--mute);border-color:var(--line);
+  cursor:not-allowed;transform:none}
+button.ghost{background:transparent;color:var(--gold);border-color:var(--dim)}
+button.ghost:hover{background:var(--sel)}
+.hint{color:var(--mute);font-size:13px;margin:12px 0 0;text-align:center}
+
+label.field{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--mute);margin:0 0 8px}
+input[type=email]{font:inherit;background:var(--panel);border:1px solid var(--edge);
+  color:var(--white);padding:14px;width:100%}
+input[type=email]::placeholder{color:var(--mute);opacity:1}
+input[type=email]:focus{outline:2px solid var(--gold);outline-offset:2px;border-color:var(--gold)}
+input[type=email][aria-invalid="true"]{border-color:var(--gold)}
+.row2{display:grid;gap:10px;margin-top:10px}
+
+/* Standalone links carry a 24px target (2.5.8). */
+a.tap{display:inline-block;padding:6px 2px;min-height:24px}
+
+/* ---- scorecard: questions ---- */
+fieldset.q{display:none;border:0;margin:0;padding:26px 0 4px;border-top:1px solid var(--line)}
+fieldset.q.on{display:block}
+legend.qtext{font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,5.5vw,27px);line-height:1.2;padding:0;margin:0 0 16px}
+legend.qtext:focus{outline:none}
+legend.qtext:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 .bar{height:2px;background:var(--line);margin:22px 0 0}
-.bar i{display:block;height:2px;background:var(--gold);width:0;transition:width .28s ease}
-.step{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:10px 0 0}
-.hd{transition:opacity .2s}
+.bar i{display:block;height:2px;background:var(--gold);width:0}
+.step{font-size:11px;letter-spacing:var(--caps);text-transform:uppercase;color:var(--dim);margin:10px 0 0}
 form.started .hd{display:none}
-.qnum{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim)}
-.qtext{font-family:var(--serif);font-weight:700;font-size:clamp(21px,5.5vw,27px);line-height:1.2;margin:8px 0 16px}
+
 .opts{display:grid;gap:8px}
-label.opt{
-  display:flex;gap:12px;align-items:baseline;cursor:pointer;
-  border:1px solid var(--line);background:var(--panel);
-  padding:13px 14px;transition:border-color .12s,background .12s;
-}
-label.opt:hover{border-color:var(--gold-dim)}
-label.opt input{position:absolute;opacity:0;pointer-events:none}
-label.opt .dot{
-  flex:0 0 auto;width:9px;height:9px;border:1px solid var(--mute);
-  border-radius:50%;transform:translateY(1px)
-}
-label.opt:has(input:checked){border-color:var(--gold);background:#15140f}
+label.opt{position:relative;display:flex;gap:12px;align-items:baseline;cursor:pointer;
+  border:1px solid var(--edge);background:var(--panel);padding:13px 14px;
+  transition:border-color .12s,background .12s}
+label.opt:hover{border-color:var(--gold)}
+label.opt input{position:absolute;inset:0;opacity:0;margin:0;pointer-events:none}
+label.opt .dot{flex:0 0 auto;width:9px;height:9px;border:1px solid var(--mute);
+  border-radius:50%;transform:translateY(1px)}
+label.opt:has(input:checked){border-color:var(--gold);background:var(--sel)}
 label.opt:has(input:checked) .dot{background:var(--gold);border-color:var(--gold)}
-label.opt:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+label.opt:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:3px}
 label.opt span.t{font-size:15px}
 
 .actions{border-top:1px solid var(--line);padding-top:26px;margin-top:26px}
-.back{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;margin-top:18px}
+.back{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--mute);text-decoration:none;margin-top:18px;padding:6px 2px;min-height:24px}
 .back:hover{color:var(--gold)}
 #go[hidden]{display:none}
-button{
-  font:inherit;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
-  background:var(--gold);color:#0b0b10;border:1px solid var(--gold);
-  padding:15px 22px;width:100%;cursor:pointer
-}
-button[disabled]{background:transparent;color:var(--mute);border-color:var(--line);cursor:not-allowed}
-button.ghost{background:transparent;color:var(--gold);border-color:var(--gold-dim)}
-.hint{color:var(--mute);font-size:13px;margin:12px 0 0;text-align:center}
 
-/* result */
+/* ---- scorecard: result ---- */
 #result[hidden]{display:none}
 .score{display:flex;align-items:baseline;gap:10px;margin:0 0 2px}
 .score b{font-family:var(--serif);font-size:76px;line-height:1;font-weight:900;color:var(--gold)}
 .score span{color:var(--mute);font-size:15px}
-.verdict{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(30px,9vw,46px);line-height:1;margin:14px 0 0}
+.verdict{font-family:var(--serif);font-weight:900;text-transform:uppercase;
+  font-size:clamp(30px,9vw,46px);line-height:1;margin:14px 0 0}
 .body p{margin:0 0 14px}
 .weak{border-left:1px solid var(--gold);padding-left:16px;margin:22px 0}
-.weak .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 6px}
+.k{font-size:11px;letter-spacing:var(--caps);text-transform:uppercase;color:var(--dim);margin:0 0 8px}
 .breakdown{margin:26px 0 0}
 .br{border-top:1px solid var(--line);padding:16px 0}
 .br-top{display:flex;gap:14px;align-items:baseline;justify-content:space-between}
 .br-q{color:var(--mute);font-size:14px;margin:0}
-.br-n{color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px;font-weight:600}
+.br-n{color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap;
+  font-size:14px;font-weight:600;margin:0}
 .rub{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:2px}
 .rub li{display:flex;gap:11px;align-items:baseline;font-size:13px;line-height:1.45;
   color:var(--mute);padding:6px 9px;border-left:2px solid transparent}
-.rub li b{flex:0 0 auto;color:var(--gold-dim);font-weight:600;font-variant-numeric:tabular-nums}
-.rub li.is{color:var(--white);background:#15140f;border-left-color:var(--gold)}
+.rub li b{flex:0 0 auto;color:var(--dim);font-weight:600;font-variant-numeric:tabular-nums}
+.rub li.is{color:var(--white);background:var(--sel);border-left-color:var(--gold)}
 .rub li.is b{color:var(--gold)}
 .rub li.is em{margin-left:auto;padding-left:10px;font-style:normal;font-size:10px;
   letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-.row2{display:grid;gap:10px;margin-top:18px}
 .next{border-top:1px solid var(--line);margin-top:26px;padding-top:26px}
-.next .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);margin:0 0 8px}
 .next p{margin:0;font-size:17px}
-.offer{border:1px solid var(--gold-dim);background:#15140f;padding:22px 20px;margin-top:26px}
-.offer h3{font-family:var(--serif);font-weight:900;text-transform:uppercase;font-size:clamp(24px,7vw,32px);line-height:1;margin:0 0 12px}
+.offer{border:1px solid var(--dim);background:var(--sel);padding:22px 20px;margin-top:26px}
 .offer p{color:var(--mute);margin:0;font-size:15px}
-.offer p b{color:var(--white);font-weight:600}
 .links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-.links a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);text-decoration:none;cursor:pointer}
+.links a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);
+  text-decoration:none;cursor:pointer;padding:6px 2px;min-height:24px;display:inline-block}
 .links a:hover{color:var(--gold)}
-input[type=email]{
-  font:inherit;background:var(--panel);border:1px solid var(--line);
-  color:var(--white);padding:14px;width:100%
-}
-input[type=email]:focus{outline:none;border-color:var(--gold)}
-footer{text-align:center;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
-footer .org{color:var(--white);font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin:0}
-footer .ppl{margin:10px 0 0;font-size:12px;color:var(--mute)}
-footer .ppl a{color:var(--mute);text-decoration:none}
-footer .ppl a:hover{color:var(--gold)}
-footer .ppl .bar{color:var(--gold-dim);padding:0 10px}
-/* XS: 320 to 359 */
-@media(max-width:359px){
-  body{padding:14px 10px 48px}
-  .frame{padding:22px 16px 26px}
-  h1{font-size:34px}
-  label.opt{padding:12px 12px}
-  label.opt span.t{font-size:14px}
-  .links{gap:16px}
-}
-/* S/M: 560 up */
-@media(min-width:560px){
-  .frame{padding:44px 40px 48px}
-  .row2{grid-template-columns:1fr auto}
-  .row2 button{width:auto}
-  .offer{padding:28px 28px 26px}
-  .br-top{gap:24px}
-}
-/* L/XL: give the page room without stretching the line length */
-@media(min-width:1100px){
-  body{padding:56px 24px 96px;font-size:17px}
-  .wrap{max-width:720px}
-  .frame{padding:56px 56px 60px}
-  .lede{font-size:18px}
-}
 
 /* ---- homepage ---- */
 .home h1{margin-bottom:0}
 .home .lede{font-size:17px;max-width:38ch}
-.home .lede+.lede{margin-top:14px}
-.join{border:1px solid var(--gold-dim);background:#15140f;padding:24px 20px;margin-top:32px}
-.join h2{font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:clamp(22px,6.5vw,30px);line-height:1;margin:0 0 10px}
-.join p{color:var(--mute);margin:0;font-size:15px}
-.join .mail{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
-.join .mail a{color:var(--gold);text-decoration:none;font-size:12px;
-  letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--gold-dim);padding:13px 18px}
-.join .mail a:hover{background:#1c1a12}
-.sec{border-top:1px solid var(--line);margin-top:32px;padding-top:26px}
-.sec .k{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
-.sec p{margin:0 0 16px;color:var(--mute)}
+.hero-cta{margin-top:28px}
+.hero-cta a{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
+  letter-spacing:.24em;text-transform:uppercase;border:1px solid var(--dim);padding:15px 22px;
+  transition:background .12s ease,transform .12s ease}
+.hero-cta a:hover{background:var(--sel)}
+.hero-cta a:active{transform:translateY(1px)}
+.sec{border-top:1px solid var(--line);margin-top:40px;padding-top:32px}
+.sec p{margin:0 0 16px;color:var(--mute);max-width:52ch}
 .sec a.go{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;
-  letter-spacing:.24em;text-transform:uppercase;border-bottom:1px solid var(--gold-dim);padding-bottom:4px}
+  letter-spacing:.24em;text-transform:uppercase;border-bottom:1px solid var(--dim);
+  padding:6px 0 5px;min-height:24px}
 .sec a.go:hover{border-bottom-color:var(--gold)}
-.who{color:var(--mute);font-size:14px;margin:18px 0 0;padding-left:16px;border-left:1px solid var(--line)}
+.who{color:var(--mute);font-size:15px;margin:0;padding-left:16px;border-left:1px solid var(--line);max-width:52ch}
 /* Luma's own embed: always current, nothing to maintain when a date moves. */
-.cal{width:100%;height:860px;border:1px solid var(--line);background:var(--panel);color-scheme:dark;display:block}
+.cal{width:100%;height:860px;border:1px solid var(--line);background:var(--panel);
+  color-scheme:dark;display:block}
 .tiny{font-size:11px;letter-spacing:.24em;text-transform:uppercase;margin:14px 0 0}
-.tiny a{color:var(--mute);text-decoration:none}
+.tiny a{color:var(--mute);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
 .tiny a:hover{color:var(--gold)}
-@media(min-width:560px){.join{padding:30px 28px}.cal{height:700px}}
+.join{border:1px solid var(--dim);background:var(--sel);padding:24px 20px;margin-top:40px}
+.join p{color:var(--mute);margin:0;font-size:15px;max-width:52ch}
+.join .mail{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.join .mail a{color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;border:1px solid var(--dim);padding:14px 18px;
+  transition:background .12s ease,transform .12s ease}
+.join .mail a:hover{background:#1c1a12}
+.join .mail a:active{transform:translateY(1px)}
+
+/* ---- footer ---- */
+footer{text-align:center;margin-top:40px;border-top:1px solid var(--line);padding-top:24px}
+footer .org{color:var(--white);font-size:11px;letter-spacing:var(--caps);
+  text-transform:uppercase;margin:0}
+footer .org a{color:inherit;text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+footer .org a:hover{color:var(--gold)}
+footer .ppl{margin:6px 0 0;font-size:12px;color:var(--mute)}
+footer .ppl a{color:var(--mute);text-decoration:none;padding:6px 2px;min-height:24px;display:inline-block}
+footer .ppl a:hover{color:var(--gold)}
+footer .ppl .bar{color:var(--dim);padding:0 10px;background:none;height:auto;display:inline;margin:0}
+
+/* ---- motion ----
+   One staggered reveal on first paint. It sequences the poster the way the eye
+   would read it. Everything else is hover and state feedback. All of it off
+   under prefers-reduced-motion, including the progress bar's width tween. */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{animation:rise .7s cubic-bezier(.16,1,.3,1) both;
+    animation-delay:calc(var(--i,0) * 90ms)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .bar i{transition:width .28s ease}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+
+/* ---- breakpoints: XS 320, S/M 560, L/XL 1100 ---- */
+@media(max-width:359px){
+  body{padding:14px 10px 48px}
+  .frame{padding:22px 16px 26px}
+  h1{font-size:34px}
+  label.opt{padding:12px}
+  label.opt span.t{font-size:14px}
+  .links{gap:16px}
+}
+@media(min-width:560px){
+  .frame{padding:44px 40px 48px}
+  .row2{grid-template-columns:1fr auto;align-items:end}
+  .row2 button{width:auto}
+  .offer,.join{padding:30px 28px}
+  .br-top{gap:24px}
+  .cal{height:700px}
+}
+@media(min-width:1100px){
+  body{padding:56px 24px 96px;font-size:17px}
+  .wrap{max-width:720px}
+  .frame{padding:56px 56px 60px}
+  .home .lede{font-size:19px}
+}

@@ -49,6 +49,30 @@ would be *noticed*, not how bad it would be. An automation that quietly stops
 working is the failure mode being taught: a day with no output looks exactly
 like a quiet day.
 
+## Accessibility
+
+Targets WCAG 2.2 AA. What that meant in practice:
+
+- Contrast is checked, not eyeballed. Every token in `style.css` carries its
+  measured ratio in a comment. `--line` is decorative rules only. Control
+  borders use `--edge`, which clears the 3:1 in 1.4.11.
+- Each question is a `fieldset` with a `legend`, so the five options are
+  announced as one labelled group.
+- Arrow keys move and check a radio at the same time. Auto-advancing on every
+  change would fling a keyboard user through the form, so the page tracks the
+  input mode: pointer users get the auto-advance, keyboard users get a Next
+  button. Answering advances the page, so the hint says so before it happens
+  (3.2.2).
+- Focus moves to the new question's legend on advance, and to the verdict
+  heading when the result appears.
+- Every interactive target is at least 24 by 24 (2.5.8).
+- Inputs have real labels above them, never a placeholder standing in.
+- All motion sits behind `prefers-reduced-motion: no-preference`, with a reduce
+  block that switches off animation and transition.
+
+Checked at 320, 375, 768, 1280 and 1920, with the 1.4.12 text-spacing overrides
+applied: no horizontal scrolling, no clipping, no target under 24px.
+
 ## Editing
 
 Questions, options and result bands are the `QUESTIONS` and `BANDS` arrays at
