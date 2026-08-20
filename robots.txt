@@ -1,0 +1,11 @@
+# /brand/ holds email templates and brand assets. They are fragments with no
+# head, so they cannot carry a noindex tag, and a crawler has no reason to
+# index a bare table of inline styles.
+User-agent: *
+Disallow: /brand/
+
+# /four-examples/ is deliberately NOT disallowed here. It carries a noindex
+# meta tag, and a crawler has to be allowed to fetch the page to read that tag.
+# Blocking it here would leave the URL indexable-by-link and the noindex unread.
+
+Sitemap: https://aifoundingtable.com/sitemap.xml
