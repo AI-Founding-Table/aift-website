@@ -7,15 +7,15 @@
 //   BEEHIIV_PUBLICATION_ID             pub_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 //   BEEHIIV_SCORECARD_AUTOMATION_ID    optional, see below
 //
-// The scorecard gate promises four worked examples. They are delivered by a
-// beehiiv automation whose trigger is API, and this is what enrols people in
-// it. Only people who finished the scorecard reach this endpoint, so passing
-// the id here is the whole of the split: no segments, no tags, and somebody
-// who subscribes on beehiiv directly is never enrolled and never sent them.
+// The four worked examples are delivered by the site, at /four-examples/,
+// revealed the moment this call succeeds. They are not emailed, because
+// beehiiv automations need the Scale plan and a page hands them over instantly
+// with nothing to break.
 //
-// Unset means nobody is enrolled, which means the gate is asking for an
-// address in exchange for something that never arrives. Of every unset state
-// in this repo, that is the one to fix first.
+// BEEHIIV_SCORECARD_AUTOMATION_ID is optional and unset. If the publication
+// ever moves to Scale and an automation is worth having, set it and scorecard
+// finishers are enrolled at the moment they are created, while people who
+// subscribe on beehiiv directly are not. Leaving it unset costs nothing now.
 //
 // ponytail: no rate limiting. The endpoint can be hit repeatedly to add
 // addresses to the list. beehiiv's double opt-in means nothing is confirmed
@@ -80,10 +80,6 @@ module.exports = async function handler(req, res) {
       // Log the detail for us, return none of it to the browser.
       console.error('beehiiv responded', r.status, (await r.text()).slice(0, 500));
       return res.status(502).json({ error: 'Upstream refused' });
-    }
-    if (!automation) {
-      // Not fatal, so the score still gets shown, but it must not be quiet.
-      console.warn('subscribe: BEEHIIV_SCORECARD_AUTOMATION_ID is not set, so nobody is being sent the four examples the gate promised');
     }
     return res.status(200).json({ ok: true });
   } catch (err) {

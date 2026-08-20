@@ -44,17 +44,7 @@ strings and the shareable-result links need a real server.
        BEEHIIV_API_KEY         from beehiiv, Settings > API
        BEEHIIV_PUBLICATION_ID  looks like pub_xxxxxxxx-xxxx-...
 
-2. **An automation that sends the four examples**, and its id in Vercel as
-   `BEEHIIV_SCORECARD_AUTOMATION_ID`. Build it in beehiiv with the trigger set
-   to **API**, its first email being `brand/emails/scorecard-examples.html`,
-   then copy the id across.
-
-   `api/subscribe.js` passes that id as `automation_ids`, so only people who
-   finished the scorecard are enrolled. Somebody who subscribes on beehiiv
-   directly never is. Until the variable is set nobody receives the examples,
-   and the gate is collecting addresses for something that never arrives.
-
-3. **Three custom fields in beehiiv**, under Audience > Custom Fields:
+2. **Three custom fields in beehiiv**, under Audience > Custom Fields:
 
        scorecard_total     integer
        scorecard_answers   string
@@ -68,6 +58,11 @@ strings and the shareable-result links need a real server.
    score with a note saying the sign-up did not go through, and every attempt
    counts a `gate-fail`. So a missing key is visible in the numbers rather than
    looking like nobody signed up.
+
+The four worked examples the gate promises are not emailed. They live at
+`/four-examples/`, and the result page links to them the moment the subscribe
+call succeeds. beehiiv automations need the Scale plan; a page delivers the
+same thing instantly, cannot land in spam, and has nothing to schedule.
 
 The homepage collects nothing itself. It points at the WhatsApp community, at
 Katya's Luma calendar, and at two email addresses. Luma notifies followers on

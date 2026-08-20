@@ -43,7 +43,7 @@
 <section class="gate" id="gate" hidden aria-labelledby="gate-h">
   <p class="k">One last step</p>
   <h2 id="gate-h" tabindex="-1">Where should we send it?</h2>
-  <p>Your score, and four real examples scored the same way. Two that worked and two that did not, with the actual numbers, including the automation that scored 14 and then quietly stopped running for weeks.</p>
+  <p>Your score, and four real examples scored the same way. Two that worked and two that did not, with the actual numbers, including the automation that scored 14 and then quietly stopped running for weeks. Both land on the next screen.</p>
   <div class="row2">
     <div>
       <label class="field" for="email">Your email</label>
@@ -292,13 +292,13 @@ document.getElementById('gate-send').addEventListener('click',function(){
   btn.disabled=true; btn.textContent='One moment';
   fetch(SUBSCRIBE_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
     body:JSON.stringify({email:email,answers:a,verdict:band.v})})
-  .then(function(r){ if(!r.ok) throw 0; count('lead'); pass(a,''); })
+  .then(function(r){ if(!r.ok) throw 0; count('lead'); pass(a,'done'); })
   .catch(function(){
     // A failure on our side is not a reason to withhold what they answered
     // four questions for. Show the score, say plainly that the sign-up did
     // not go through, and count it so a broken key cannot hide.
     count('gate-fail');
-    pass(a,'Your score is below. The sign-up did not go through, so write to andres@redmage.cc if you want the four examples.');
+    pass(a,'Your score is below, and the four examples are at aifoundingtable.com/four-examples. The sign-up itself did not go through, so write to andres@redmage.cc if you wanted to be on the list.');
   });
 });
 
@@ -306,7 +306,13 @@ function pass(a,note){
   gatePassed=true;
   document.getElementById('gate').hidden=true;
   render(a);
-  if(note){ var n=document.getElementById('r-note'); n.textContent=note; n.hidden=false; }
+  var n=document.getElementById('r-note');
+  if(note==='done'){
+    // Hand the examples over now rather than promising an email. Static
+    // string, so innerHTML is safe here and nothing from the visitor reaches it.
+    n.innerHTML='Your four worked examples are ready. <a href="/four-examples/">Read them now</a>.';
+    n.hidden=false;
+  } else if(note){ n.textContent=note; n.hidden=false; }
 }
 
 document.getElementById('share').addEventListener('click',function(){

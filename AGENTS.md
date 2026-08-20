@@ -9,6 +9,7 @@ The AI Founding Table website. Live at aifoundingtable.com on Vercel.
 
     /                          homepage
     /ai-readiness-scorecard/   the four-question scorecard
+    /four-examples/            what the scorecard trades an address for
     style.css                  shared design for every page
     api/subscribe.js           the only server-side code
 
@@ -24,12 +25,16 @@ and a token in a static page is a token anybody can read. It reads
 `BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` from the environment. Never put
 a key in a page, and never add a second endpoint without the same reason.
 
-The four emails live in `brand/emails/`. The welcome email goes to everybody
-and says only what the list is for. The examples email goes to scorecard
-finishers alone, through an automation they are enrolled in by
-`automation_ids`, because that is the group the gate made a promise to. Do not
-merge them back together: one sets expectations, the other keeps a promise, and
-an email doing both does neither well.
+`/four-examples/` is what the gate trades an address for. It is `noindex` on
+purpose: it should not be the top result for someone who never took the
+scorecard. Do not add it to the nav, and do not link it from a public page.
+
+The emails live in `brand/emails/`. The welcome email goes to everybody and
+says only what the list is for. `scorecard-examples.md` is the same content as
+that page in email form, kept but not sent, since automations need the Scale
+plan and the page delivers instantly. Do not fold the examples back into the
+welcome email: one sets expectations for everyone, the other keeps a promise
+made to a smaller group.
 
 **beehiiv drops custom fields that do not already exist, and still answers
 200.** The endpoint sends `scorecard_total`, `scorecard_answers` and

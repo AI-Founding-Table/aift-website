@@ -1,19 +1,19 @@
 # Scorecard examples email
 
-Sent by an automation, not on subscribe. Only people who finished the scorecard
-should get it, because only they were promised it.
+**Not currently sent.** The examples are delivered by the site instead, at
+`/four-examples/`, revealed the moment the subscribe call succeeds. beehiiv
+automations need the Scale plan at 43 dollars a month, and a page hands the
+same content over instantly with nothing to schedule and nothing to break.
 
-`api/subscribe.js` enrols them by passing `automation_ids` when it creates the
-subscription, so the split needs no segments and no tags. Somebody who signs up
-on beehiiv directly is never enrolled and never sees this. Set up:
+This copy is kept because it is the same content in email form. If the
+publication ever moves to Scale, build an automation with the trigger set to
+**API**, make this its first email, and set
+`BEEHIIV_SCORECARD_AUTOMATION_ID` in Vercel. `api/subscribe.js` already passes
+it as `automation_ids`, so only scorecard finishers would be enrolled and
+direct beehiiv subscribers never would.
 
-1. In beehiiv, build an automation whose trigger is **API**.
-2. Its first email is this copy. `scorecard-examples.html` is it, built out.
-3. Copy the automation id and set `BEEHIIV_SCORECARD_AUTOMATION_ID` in Vercel.
-
-Until that variable is set, nothing is enrolled and nobody gets these examples,
-which means the gate is promising something it does not deliver. That is the
-one state here worth avoiding.
+Worth doing only if you want a real sequence, several emails over days. For one
+send, the page is better: it arrives now, and it cannot land in spam.
 
 **Subject:** Two that worked, two that did not
 

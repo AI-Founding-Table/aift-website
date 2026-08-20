@@ -25,6 +25,9 @@ If you have not scored a piece of your work yet, the scorecard takes 90 seconds
 and is willing to tell you that AI is the wrong tool for it.
 [Take the scorecard]
 
+Already did? The four worked examples are at aifoundingtable.com/four-examples,
+in case you closed the tab.
+
 Katya and Andres
 
 ---
