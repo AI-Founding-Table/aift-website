@@ -133,6 +133,12 @@ input[type=email][aria-invalid="true"]{border-color:var(--gold)}
 a.tap{display:inline-block;padding:6px 2px;min-height:24px}
 
 /* ---- scorecard: questions ---- */
+/* The questions are built by script, so before it runs this box is empty and
+   everything under it sits high, then jumps. Reserving the height of the
+   shortest question absorbs almost all of that shift. 355 is under the
+   shortest real question at every width measured (359 at 375px, 367 elsewhere),
+   so it can never pad one out. */
+#questions{min-height:355px}
 fieldset.q{display:none;border:0;margin:0;padding:26px 0 4px;border-top:1px solid var(--line)}
 fieldset.q.on{display:block}
 legend.qtext{font-family:var(--serif);font-weight:700;
