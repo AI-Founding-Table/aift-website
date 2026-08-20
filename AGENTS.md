@@ -24,6 +24,13 @@ and a token in a static page is a token anybody can read. It reads
 `BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` from the environment. Never put
 a key in a page, and never add a second endpoint without the same reason.
 
+The four emails live in `brand/emails/`. The welcome email goes to everybody
+and says only what the list is for. The examples email goes to scorecard
+finishers alone, through an automation they are enrolled in by
+`automation_ids`, because that is the group the gate made a promise to. Do not
+merge them back together: one sets expectations, the other keeps a promise, and
+an email doing both does neither well.
+
 **beehiiv drops custom fields that do not already exist, and still answers
 200.** The endpoint sends `scorecard_total`, `scorecard_answers` and
 `scorecard_verdict`. Unless all three exist under Audience > Custom Fields in

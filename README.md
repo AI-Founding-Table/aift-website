@@ -44,7 +44,17 @@ strings and the shareable-result links need a real server.
        BEEHIIV_API_KEY         from beehiiv, Settings > API
        BEEHIIV_PUBLICATION_ID  looks like pub_xxxxxxxx-xxxx-...
 
-2. **Three custom fields in beehiiv**, under Audience > Custom Fields:
+2. **An automation that sends the four examples**, and its id in Vercel as
+   `BEEHIIV_SCORECARD_AUTOMATION_ID`. Build it in beehiiv with the trigger set
+   to **API**, its first email being `brand/emails/scorecard-examples.html`,
+   then copy the id across.
+
+   `api/subscribe.js` passes that id as `automation_ids`, so only people who
+   finished the scorecard are enrolled. Somebody who subscribes on beehiiv
+   directly never is. Until the variable is set nobody receives the examples,
+   and the gate is collecting addresses for something that never arrives.
+
+3. **Three custom fields in beehiiv**, under Audience > Custom Fields:
 
        scorecard_total     integer
        scorecard_answers   string
